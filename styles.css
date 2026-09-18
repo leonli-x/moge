@@ -185,20 +185,20 @@ input[type="range"] { width: 100%; accent-color: var(--cinnabar); cursor: pointe
 .feature-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 20px; }
 .feature-heading h2 { margin: 6px 0 0; font-size: 28px; line-height: 1.25; }
 .feature-heading p { max-width: 320px; margin: 0 0 2px; color: var(--ink-soft); font-size: 13px; line-height: 1.6; text-align: right; }
-.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 380px)); gap: 18px; justify-content: start; }
-.feature-card { position: relative; display: grid; grid-template-rows: 174px auto; min-width: 0; min-height: 312px; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; color: inherit; background: var(--panel); box-shadow: 0 8px 24px rgba(50, 40, 30, .06); text-decoration: none; transition: border-color .18s, box-shadow .18s, transform .18s; }
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 240px)); gap: 18px; justify-content: start; }
+.feature-card { position: relative; display: grid; grid-template-rows: 1fr auto; aspect-ratio: 1; min-width: 0; max-width: 240px; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; color: inherit; background: var(--panel); box-shadow: 0 8px 24px rgba(50, 40, 30, .06); text-decoration: none; transition: border-color .18s, box-shadow .18s, transform .18s; }
 .feature-card:hover { border-color: #d5a59d; box-shadow: 0 14px 30px rgba(50, 40, 30, .12); transform: translateY(-2px); }
 .feature-card:focus-visible { outline: 3px solid rgba(35, 100, 122, .35); outline-offset: 4px; }
 .feature-card-visual { position: relative; display: grid; place-items: center; overflow: hidden; background: linear-gradient(135deg, #fffefb 0%, #f8f2e9 100%); }
-.feature-card-visual::before, .feature-card-visual::after { content: ""; position: absolute; inset: 17%; pointer-events: none; border: 1px solid rgba(22, 141, 204, .4); }
+.feature-card-visual::before, .feature-card-visual::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); height: 74%; aspect-ratio: 1; pointer-events: none; border: 1px solid rgba(22, 141, 204, .4); }
 .feature-card-visual::after { border: 0; background: linear-gradient(to right, transparent calc(50% - .5px), var(--grid-soft) 50%, transparent calc(50% + .5px)), linear-gradient(to bottom, transparent calc(50% - .5px), var(--grid-soft) 50%, transparent calc(50% + .5px)); }
-.feature-card-character { position: relative; z-index: 1; color: var(--cinnabar); font: 104px/.9 STKaiti, KaiTi, "Songti SC", serif; }
-.feature-card-seal { position: absolute; right: 16px; top: 14px; z-index: 2; display: grid; place-items: center; width: 43px; height: 43px; border: 1px solid #d8a69c; color: var(--cinnabar); background: rgba(247, 232, 228, .9); font: 17px/1 STKaiti, KaiTi, serif; }
-.feature-card-copy { min-width: 0; padding: 20px 58px 20px 22px; }
-.feature-card-copy h3 { margin: 6px 0 7px; font-size: 26px; line-height: 1.2; }
-.feature-card-copy p { margin: 0; color: var(--ink-soft); font-size: 14px; line-height: 1.6; }
-.feature-card-arrow { position: absolute; right: 20px; bottom: 22px; display: grid; place-items: center; width: 32px; height: 32px; border: 1px solid var(--line-strong); border-radius: 50%; color: var(--cinnabar); background: white; transition: background .18s, border-color .18s, transform .18s; }
-.feature-card-arrow svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.feature-card-character { position: relative; z-index: 1; color: var(--cinnabar); font: 78px/.9 STKaiti, KaiTi, "Songti SC", serif; }
+.feature-card-seal { position: absolute; right: 12px; top: 12px; z-index: 2; display: grid; place-items: center; width: 35px; height: 35px; border: 1px solid #d8a69c; color: var(--cinnabar); background: rgba(247, 232, 228, .9); font: 14px/1 STKaiti, KaiTi, serif; }
+.feature-card-copy { min-width: 0; padding: 14px 44px 14px 16px; }
+.feature-card-copy h3 { margin: 4px 0 5px; font-size: 20px; line-height: 1.2; }
+.feature-card-copy p { margin: 0; color: var(--ink-soft); font-size: 13px; line-height: 1.5; }
+.feature-card-arrow { position: absolute; right: 14px; bottom: 14px; display: grid; place-items: center; width: 26px; height: 26px; border: 1px solid var(--line-strong); border-radius: 50%; color: var(--cinnabar); background: white; transition: background .18s, border-color .18s, transform .18s; }
+.feature-card-arrow svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .feature-card:hover .feature-card-arrow { border-color: #d5a59d; background: var(--cinnabar-soft); transform: translateX(2px); }
 
 /* 汉字笔顺学习页 */
@@ -300,8 +300,8 @@ input[type="range"] { width: 100%; accent-color: var(--cinnabar); cursor: pointe
   .home-hero-copy p { font-size: 15px; }
   .feature-heading { display: block; }
   .feature-heading p { margin-top: 10px; text-align: left; }
-  .feature-grid { grid-template-columns: minmax(0, 1fr); }
-  .feature-card { width: 100%; }
+  .feature-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 240px)); }
+  .feature-card { width: 100%; max-width: 240px; }
   .character-overview { grid-template-columns: 72px minmax(0, 1fr); gap: 11px; }
   .character-glyph { width: 72px; height: 72px; font-size: 45px; }
   .character-details { grid-column: 1 / -1; justify-content: space-between; padding-top: 4px; }

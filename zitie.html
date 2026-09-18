@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="输入一个汉字，学习笔顺动画、田字格分步书写和常用组词。" />
+    <title>墨格 - 汉字笔顺学习</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23a63225'/%3E%3Ctext x='32' y='45' text-anchor='middle' font-size='42' fill='white'%3E墨%3C/text%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="learning-page">
+    <a class="skip-link" href="#learning-main">跳到学习内容</a>
+    <svg aria-hidden="true" class="icon-sprite">
+      <symbol id="icon-replay" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.7-4.4L3 9M3 4v5h5M4 13a8 8 0 0 0 14.7 4.4L21 15M21 20v-5h-5"/></symbol>
+      <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    </svg>
+
+    <header class="app-header learning-header">
+      <a class="brand" href="index.html" aria-label="墨格首页">
+        <span class="brand-seal" aria-hidden="true">墨</span>
+        <div>
+          <h1>墨格</h1>
+          <p>把每一个字，写进方正里</p>
+        </div>
+      </a>
+      <div class="header-meta">
+        <nav class="site-nav" aria-label="主导航">
+          <a class="nav-link" href="index.html">首页</a>
+          <a class="nav-link active" href="zitie.html" aria-current="page">笔顺学习</a>
+          <a class="nav-link" href="copybook.html">字帖生成器</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="learning-main" id="learning-main">
+      <section class="learning-hero" aria-labelledby="learning-title">
+        <div class="hero-copy">
+          <span class="eyebrow">汉字笔顺学习</span>
+          <h2 id="learning-title">认识一个字，先从笔画开始</h2>
+          <p>输入一个汉字，跟着动画一笔一画地写，再看看它能组成哪些词。</p>
+        </div>
+        <form class="character-form" id="character-form" novalidate>
+          <label class="field-label" for="character-input">输入汉字</label>
+          <div class="character-input-row">
+            <input id="character-input" name="character" type="text" maxlength="2" value="永" autocomplete="off" aria-describedby="character-help character-error" />
+            <button class="button primary" type="submit">开始学习<svg aria-hidden="true"><use href="#icon-arrow"/></svg></button>
+          </div>
+          <p class="field-help" id="character-help">支持简体和繁体，每次学习一个字。按 Enter 也可以重新播放。</p>
+          <p class="field-error" id="character-error" role="alert"></p>
+        </form>
+      </section>
+
+      <div class="learning-status" id="learning-status" aria-live="polite">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span id="learning-status-text">正在准备“永”的笔顺…</span>
+      </div>
+
+      <div class="learning-layout">
+        <section class="learning-card animation-card" aria-labelledby="animation-title">
+          <div class="card-heading">
+            <div>
+              <span class="eyebrow">笔顺动画</span>
+              <h3 id="animation-title">跟着笔画写一遍</h3>
+            </div>
+            <button class="button secondary replay-button" id="replay-button" type="button" disabled>
+              <svg aria-hidden="true"><use href="#icon-replay"/></svg>
+              重新播放
+            </button>
+          </div>
+          <div class="animation-stage" id="animation-stage" role="img" aria-label="汉字笔顺动画">
+            <div class="animation-grid-lines" aria-hidden="true"></div>
+            <div class="writer-target" id="writer-target"></div>
+            <div class="animation-placeholder" id="animation-placeholder">正在加载笔顺…</div>
+          </div>
+          <div class="animation-footer">
+            <span id="animation-note">播放完成后会自动循环</span>
+            <span class="loop-badge" id="loop-badge"><span aria-hidden="true">↻</span> 循环播放</span>
+          </div>
+          <div class="character-overview" aria-live="polite">
+            <div class="character-glyph" id="character-glyph" aria-hidden="true">永</div>
+            <div class="character-overview-copy">
+              <span class="character-label">当前汉字</span>
+              <strong class="character-pinyin" id="character-pinyin">yǒng</strong>
+              <span class="character-pinyin-note" id="character-pinyin-note">常见读音</span>
+            </div>
+            <dl class="character-details">
+              <div><dt>部首</dt><dd id="character-radical">水</dd></div>
+              <div><dt>结构</dt><dd id="character-structure">独体</dd></div>
+              <div><dt>笔画</dt><dd id="character-strokes">5 画</dd></div>
+            </dl>
+          </div>
+        </section>
+
+        <section class="learning-card stroke-card" aria-labelledby="stroke-title">
+          <div class="card-heading compact-heading">
+            <div>
+              <span class="eyebrow">田字格</span>
+              <h3 id="stroke-title">分步看笔顺</h3>
+            </div>
+            <span class="card-count" id="stroke-count">5 画</span>
+          </div>
+          <div class="stroke-grid" id="stroke-grid" aria-live="polite"></div>
+          <div class="panel-empty" id="stroke-empty" hidden>
+            <strong>暂时没有笔顺数据</strong>
+            <span>请检查网络后重试，动画和组词仍可继续使用。</span>
+          </div>
+        </section>
+
+        <section class="learning-card words-card" aria-labelledby="words-title">
+          <div class="card-heading compact-heading">
+            <div>
+              <span class="eyebrow">词语积累</span>
+              <h3 id="words-title">这个字可以组成</h3>
+            </div>
+            <span class="card-count" id="words-count">0 个词</span>
+          </div>
+          <div class="word-list" id="word-list" aria-live="polite"></div>
+          <div class="panel-empty" id="words-empty" hidden>
+            <strong>还没有找到组词</strong>
+            <span>换一个汉字试试看。</span>
+          </div>
+          <button class="button tertiary words-toggle" id="words-toggle" type="button" hidden aria-expanded="false">展开全部</button>
+        </section>
+      </div>
+    </main>
+
+    <script type="module" src="learning.js"></script>
+  </body>
+</html>

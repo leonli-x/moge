@@ -5,8 +5,8 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        home: resolve(process.cwd(), "home.html"),
-        learning: resolve(process.cwd(), "index.html"),
+        index: resolve(process.cwd(), "index.html"),
+        zitie: resolve(process.cwd(), "zitie.html"),
         copybook: resolve(process.cwd(), "copybook.html")
       }
     }
