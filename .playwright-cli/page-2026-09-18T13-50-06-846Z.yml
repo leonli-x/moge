@@ -1,0 +1,125 @@
+- generic [active] [ref=f4e1]:
+  - link "跳到学习内容" [ref=f4e2] [cursor=pointer]:
+    - /url: "#learning-main"
+  - banner [ref=f4e3]:
+    - link "墨格字帖笔顺学习首页" [ref=f4e4] [cursor=pointer]:
+      - /url: index.html
+      - generic [aria-hidden] [ref=f4e5]: 墨
+      - heading "墨格字帖" [level=1] [ref=f4e7]
+    - navigation "主导航" [ref=f4e9]:
+      - link "笔顺学习" [ref=f4e10] [cursor=pointer]:
+        - /url: index.html
+      - link "字帖生成器" [ref=f4e11] [cursor=pointer]:
+        - /url: copybook.html
+  - main [ref=f4e12]:
+    - region [ref=f4e13]:
+      - generic [ref=f4e14]:
+        - text: 汉字笔顺学习
+        - heading "认识一个字，先从笔画开始" [level=2] [ref=f4e15]
+        - paragraph [ref=f4e16]: 输入一个汉字，跟着动画一笔一画地写，再看看它能组成哪些词。
+      - generic [ref=f4e17]:
+        - generic [ref=f4e18]: 输入汉字
+        - generic [ref=f4e19]:
+          - textbox "输入汉字" [ref=f4e20]: 学
+          - button "开始学习" [ref=f4e21] [cursor=pointer]
+        - paragraph [ref=f4e22]: 支持简体和繁体，每次学习一个字。按 Enter 也可以重新播放。
+        - alert [ref=f4e23]
+    - generic [ref=f4e24]: 正在循环播放“学”的笔顺
+    - generic [ref=f4e27]:
+      - region [ref=f4e28]:
+        - generic [ref=f4e29]:
+          - generic [ref=f4e30]:
+            - text: 笔顺动画
+            - heading "跟着笔画写一遍" [level=3] [ref=f4e31]
+          - button "重新播放" [ref=f4e32] [cursor=pointer]
+        - img "学 的笔顺动画" [ref=f4e35]
+        - generic [ref=f4e66]:
+          - generic [ref=f4e67]: 播放完成后会自动循环
+          - generic [ref=f4e68]:
+            - generic [aria-hidden] [ref=f4e69]: ↻
+            - text: 循环播放
+        - generic [ref=f4e70]:
+          - generic [aria-hidden] [ref=f4e71]: 学
+          - generic [ref=f4e72]:
+            - generic [ref=f4e73]: 当前汉字
+            - strong [ref=f4e74]: xué
+            - generic [ref=f4e75]: 常见读音
+          - generic [ref=f4e76]:
+            - generic [ref=f4e77]:
+              - term [ref=f4e78]: 部首
+              - definition [ref=f4e79]: 子
+            - generic [ref=f4e80]:
+              - term [ref=f4e81]: 结构
+              - definition [ref=f4e82]: 上下结构
+            - generic [ref=f4e83]:
+              - term [ref=f4e84]: 笔画
+              - definition [ref=f4e85]: 8 画
+      - region [ref=f4e86]:
+        - generic [ref=f4e87]:
+          - generic [ref=f4e88]:
+            - text: 田字格
+            - heading "分步看笔顺" [level=3] [ref=f4e89]
+          - generic [ref=f4e90]: 8 画
+        - generic [ref=f4e91]:
+          - img "学 完整字形" [ref=f4e92]:
+            - generic [ref=f4e103]: 参考
+          - img "学 第 1 画" [ref=f4e104]:
+            - generic [ref=f4e108]: "1"
+          - img "学 第 2 画" [ref=f4e109]:
+            - generic [ref=f4e114]: "2"
+          - img "学 第 3 画" [ref=f4e115]:
+            - generic [ref=f4e121]: "3"
+          - img "学 第 4 画" [ref=f4e122]:
+            - generic [ref=f4e129]: "4"
+          - img "学 第 5 画" [ref=f4e130]:
+            - generic [ref=f4e138]: "5"
+          - img "学 第 6 画" [ref=f4e139]:
+            - generic [ref=f4e148]: "6"
+          - img "学 第 7 画" [ref=f4e149]:
+            - generic [ref=f4e159]: "7"
+          - img "学 第 8 画" [ref=f4e160]:
+            - generic [ref=f4e171]: "8"
+      - region [ref=f4e172]:
+        - generic [ref=f4e173]:
+          - generic [ref=f4e174]:
+            - text: 词语积累
+            - heading "这个字可以组成" [level=3] [ref=f4e175]
+          - generic [ref=f4e176]: 97 个词
+        - list [ref=f4e177]:
+          - listitem [ref=f4e178]:
+            - generic [ref=f4e179]: 爱科学
+            - generic [ref=f4e180]: ài kē xué
+          - listitem [ref=f4e181]:
+            - generic [ref=f4e182]: 爱学习
+            - generic [ref=f4e183]: ài xué xí
+          - listitem [ref=f4e184]:
+            - generic [ref=f4e185]: 办学
+            - generic [ref=f4e186]: bàn xué
+          - listitem [ref=f4e187]:
+            - generic [ref=f4e188]: 博学
+            - generic [ref=f4e189]: bó xué
+          - listitem [ref=f4e190]:
+            - generic [ref=f4e191]: 不科学
+            - generic [ref=f4e192]: bù kē xué
+          - listitem [ref=f4e193]:
+            - generic [ref=f4e194]: 才学
+            - generic [ref=f4e195]: cái xué
+          - listitem [ref=f4e196]:
+            - generic [ref=f4e197]: 辍学
+            - generic [ref=f4e198]: chuò xué
+          - listitem [ref=f4e199]:
+            - generic [ref=f4e200]: 初学
+            - generic [ref=f4e201]: chū xué
+          - listitem [ref=f4e202]:
+            - generic [ref=f4e203]: 大学
+            - generic [ref=f4e204]: dà xué
+          - listitem [ref=f4e205]:
+            - generic [ref=f4e206]: 大学生
+            - generic [ref=f4e207]: dà xué shēng
+          - listitem [ref=f4e208]:
+            - generic [ref=f4e209]: 多学科
+            - generic [ref=f4e210]: duō xué kē
+          - listitem [ref=f4e211]:
+            - generic [ref=f4e212]: 放学
+            - generic [ref=f4e213]: fàng xué
+        - button "展开全部" [ref=f4e214] [cursor=pointer]

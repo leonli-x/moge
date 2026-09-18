@@ -1,0 +1,41 @@
+- generic [active] [ref=e1]:
+  - link "跳到功能入口" [ref=e2] [cursor=pointer]:
+    - /url: "#home-main"
+  - banner [ref=e3]:
+    - link "墨格首页" [ref=e4] [cursor=pointer]:
+      - /url: home.html
+      - generic [aria-hidden] [ref=e5]: 墨
+      - generic [ref=e6]:
+        - heading "墨格" [level=1] [ref=e7]
+        - paragraph [ref=e8]: 把每一个字，写进方正里
+    - navigation "主导航" [ref=e10]:
+      - link "首页" [ref=e11] [cursor=pointer]:
+        - /url: home.html
+      - link "笔顺学习" [ref=e12] [cursor=pointer]:
+        - /url: index.html
+      - link "字帖生成器" [ref=e13] [cursor=pointer]:
+        - /url: copybook.html
+  - main [ref=e14]:
+    - region [ref=e15]:
+      - generic [ref=e16]:
+        - text: 墨格 · 书写学习工具
+        - heading "把每一个字，写进方正里" [level=2] [ref=e17]
+        - paragraph [ref=e18]: 从认识一个字开始，一笔一画，慢慢写好。
+      - generic [aria-hidden] [ref=e19]:
+        - generic [ref=e20]: 永
+        - generic [ref=e21]: 一字一练
+    - region [ref=e22]:
+      - generic [ref=e23]:
+        - generic [ref=e24]:
+          - text: 功能入口
+          - heading "从这里开始" [level=2] [ref=e25]
+        - paragraph [ref=e26]: 选择一个练习方向，进入你的书写空间。
+      - link "字帖：学习笔顺，认识一个字" [ref=e28] [cursor=pointer]:
+        - /url: index.html
+        - generic [aria-hidden] [ref=e29]:
+          - generic [ref=e30]: 永
+          - generic [ref=e31]: 字帖
+        - generic [ref=e32]:
+          - text: 当前功能
+          - heading "字帖" [level=3] [ref=e33]
+          - paragraph [ref=e34]: 学习笔顺，认识一个字

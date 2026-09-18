@@ -1,0 +1,97 @@
+- generic [active] [ref=e1]:
+  - link "跳到学习内容" [ref=e2] [cursor=pointer]:
+    - /url: "#learning-main"
+  - banner [ref=e3]:
+    - link "墨格字帖笔顺学习首页" [ref=e4] [cursor=pointer]:
+      - /url: index.html
+      - generic [aria-hidden] [ref=e5]: 墨
+      - generic [ref=e6]:
+        - heading "墨格字帖" [level=1] [ref=e7]
+        - paragraph [ref=e8]: 把每一个字，写进方正里
+    - navigation "主导航" [ref=e10]:
+      - link "笔顺学习" [ref=e11] [cursor=pointer]:
+        - /url: index.html
+      - link "字帖生成器" [ref=e12] [cursor=pointer]:
+        - /url: copybook.html
+  - main [ref=e13]:
+    - region [ref=e14]:
+      - generic [ref=e15]:
+        - text: 汉字笔顺学习
+        - heading "认识一个字，先从笔画开始" [level=2] [ref=e16]
+        - paragraph [ref=e17]: 输入一个汉字，跟着动画一笔一画地写，再看看它能组成哪些词。
+      - generic [ref=e18]:
+        - generic [ref=e19]: 输入汉字
+        - generic [ref=e20]:
+          - textbox "输入汉字" [ref=e21]: 永
+          - button "开始学习" [ref=e22] [cursor=pointer]
+        - paragraph [ref=e25]: 支持简体和繁体，每次学习一个字。按 Enter 也可以重新播放。
+        - alert [ref=e26]
+    - generic [ref=e27]: 正在准备“永”的笔顺…
+    - generic [ref=e30]:
+      - region [ref=e31]:
+        - generic [ref=e32]:
+          - generic [ref=e33]:
+            - text: 笔顺动画
+            - heading "跟着笔画写一遍" [level=3] [ref=e34]
+          - button "重新播放" [disabled] [ref=e35]
+        - img "永 的笔顺动画" [ref=e38]:
+          - generic [ref=e40]: 正在加载笔顺…
+        - generic [ref=e41]:
+          - generic [ref=e42]: 正在准备笔顺动画…
+          - generic [ref=e43]:
+            - generic [aria-hidden] [ref=e44]: ↻
+            - text: 循环播放
+        - generic [ref=e45]:
+          - generic [aria-hidden] [ref=e46]: 永
+          - generic [ref=e47]:
+            - generic [ref=e48]: 当前汉字
+            - strong [ref=e49]: yǒng
+            - generic [ref=e50]: 常见读音
+          - generic [ref=e51]:
+            - generic [ref=e52]:
+              - term [ref=e53]: 部首
+              - definition [ref=e54]: 水
+            - generic [ref=e55]:
+              - term [ref=e56]: 结构
+              - definition [ref=e57]: 独体结构
+            - generic [ref=e58]:
+              - term [ref=e59]: 笔画
+              - definition [ref=e60]: 5 画
+      - region [ref=e61]:
+        - generic [ref=e62]:
+          - generic [ref=e63]:
+            - text: 田字格
+            - heading "分步看笔顺" [level=3] [ref=e64]
+          - generic [ref=e65]: 5 画
+        - generic [ref=e66]: 正在加载笔顺…
+      - region [ref=e68]:
+        - generic [ref=e69]:
+          - generic [ref=e70]:
+            - text: 词语积累
+            - heading "这个字可以组成" [level=3] [ref=e71]
+          - generic [ref=e72]: 8 个词
+        - list [ref=e73]:
+          - listitem [ref=e74]:
+            - generic [ref=e75]: 永别
+            - generic [ref=e76]: yǒng bié
+          - listitem [ref=e77]:
+            - generic [ref=e78]: 永不
+            - generic [ref=e79]: yǒng bù
+          - listitem [ref=e80]:
+            - generic [ref=e81]: 永存
+            - generic [ref=e82]: yǒng cún
+          - listitem [ref=e83]:
+            - generic [ref=e84]: 永恒
+            - generic [ref=e85]: yǒng héng
+          - listitem [ref=e86]:
+            - generic [ref=e87]: 永久
+            - generic [ref=e88]: yǒng jiǔ
+          - listitem [ref=e89]:
+            - generic [ref=e90]: 永久性
+            - generic [ref=e91]: yǒng jiǔ xìng
+          - listitem [ref=e92]:
+            - generic [ref=e93]: 永世
+            - generic [ref=e94]: yǒng shì
+          - listitem [ref=e95]:
+            - generic [ref=e96]: 永远
+            - generic [ref=e97]: yǒng yuǎn

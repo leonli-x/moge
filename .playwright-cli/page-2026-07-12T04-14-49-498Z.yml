@@ -1,0 +1,549 @@
+- generic [active] [ref=e1]:
+  - link "跳到字帖设置" [ref=e2] [cursor=pointer]:
+    - /url: "#editor"
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: 墨
+      - generic [ref=e6]:
+        - heading "墨格字帖" [level=1] [ref=e7]
+        - paragraph [ref=e8]: 把每一个字，写进方正里
+    - generic [ref=e9]:
+      - generic [ref=e10]: 已自动保存
+      - button "生成 PDF / 打印" [ref=e13] [cursor=pointer]
+  - main [ref=e16]:
+    - complementary "字帖设置" [ref=e17]:
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - text: 字帖设置
+          - heading "今天练什么字？" [level=2] [ref=e20]
+        - generic [ref=e21]: 3 步完成
+      - region [ref=e22]:
+        - generic [ref=e23]:
+          - generic [ref=e24]: "1"
+          - generic [ref=e25]:
+            - heading "选择内容" [level=3] [ref=e26]
+            - paragraph [ref=e27]: 按年级一键填入，也可以继续增删
+        - generic [ref=e28]: 常用识字表
+        - group "按年级选择常用汉字" [ref=e29]:
+          - button "学前" [ref=e30] [cursor=pointer]
+          - button "一" [pressed] [ref=e31] [cursor=pointer]
+          - button "二" [ref=e32] [cursor=pointer]
+          - button "三" [ref=e33] [cursor=pointer]
+          - button "四" [ref=e34] [cursor=pointer]
+          - button "五" [ref=e35] [cursor=pointer]
+          - button "六" [ref=e36] [cursor=pointer]
+        - generic [ref=e37] [cursor=pointer]:
+          - generic [ref=e38]: 天
+          - generic [ref=e39]:
+            - strong [ref=e40]: 一年级常用字
+            - generic [ref=e41]: 基础识字与生活 · 24 个字
+        - generic [ref=e44]:
+          - generic [ref=e45]: 练习汉字
+          - generic [ref=e46]: 23 / 60
+        - textbox "练习汉字" [ref=e47]: 天地人口手足日月山水田火上下左右大小多少中正中国
+        - paragraph [ref=e48]: 支持粘贴课文；标点和重复汉字会自动去除。
+        - alert
+      - region [ref=e49]:
+        - generic [ref=e50]:
+          - generic [ref=e51]: "2"
+          - generic [ref=e52]:
+            - heading "练习样式" [level=3] [ref=e53]
+            - paragraph [ref=e54]: 选择格子和描红数量
+        - group "书写格" [ref=e55]:
+          - generic [ref=e57]:
+            - generic [ref=e58] [cursor=pointer]:
+              - radio "永 田字格" [checked]
+              - generic [ref=e59]: 永
+              - generic [ref=e61]: 田字格
+            - generic [ref=e62] [cursor=pointer]:
+              - radio "永 米字格"
+              - generic [ref=e63]: 永
+              - generic [ref=e65]: 米字格
+            - generic [ref=e66] [cursor=pointer]:
+              - radio "永 回宫格"
+              - generic [ref=e67]: 永
+              - generic [ref=e69]: 回宫格
+        - generic [ref=e70]:
+          - generic [ref=e71]:
+            - generic [ref=e72]: 每字描红
+            - status [ref=e73]: 3 格
+          - slider "每字描红" [ref=e74] [cursor=pointer]: "3"
+          - generic [ref=e75]:
+            - generic [ref=e76]: 少
+            - generic [ref=e77]: 多
+        - generic [ref=e78]:
+          - generic [ref=e79]:
+            - generic [ref=e80]: 显示拼音与偏旁
+            - generic [ref=e81]: 自动生成声调、部首和结构
+          - checkbox "显示拼音与偏旁" [checked] [ref=e83]
+      - region [ref=e85]:
+        - generic [ref=e86]:
+          - generic [ref=e87]: "3"
+          - generic [ref=e88]:
+            - heading "纸张信息" [level=3] [ref=e89]
+            - paragraph [ref=e90]: 打印前补充标题和姓名
+        - generic [ref=e91]: 字帖标题
+        - textbox "字帖标题" [ref=e92]: 每日汉字练习
+        - group "A4 方向" [ref=e93]:
+          - generic [ref=e95]:
+            - generic [ref=e96]:
+              - radio "横向" [checked]
+              - generic [ref=e97] [cursor=pointer]: 横向
+            - generic [ref=e98]:
+              - radio "纵向"
+              - generic [ref=e99] [cursor=pointer]: 纵向
+      - button "生成 PDF / 打印" [ref=e100] [cursor=pointer]
+      - paragraph [ref=e103]: 在打印窗口选择“另存为 PDF”，请开启“背景图形”。
+    - region [ref=e104]:
+      - generic [ref=e105]:
+        - generic [ref=e106]:
+          - text: 实时预览
+          - heading "A4 打印效果" [level=2] [ref=e107]
+        - generic [ref=e108]:
+          - generic [ref=e109]: 5 页 · 横向
+          - button "恢复默认设置" [ref=e110] [cursor=pointer]
+      - generic [ref=e113]:
+        - region "字帖第 1 页" [ref=e114]:
+          - generic [ref=e115]:
+            - generic [ref=e116]:
+              - generic [ref=e117]: 墨
+              - generic [ref=e118]:
+                - heading "每日汉字练习" [level=3] [ref=e119]
+                - paragraph [ref=e120]: 一看结构 · 二描笔画 · 三写端正
+            - generic [ref=e121]:
+              - generic [ref=e122]: 班级：____________
+              - generic [ref=e123]: 姓名：____________
+              - generic [ref=e124]: 日期：____月____日
+          - generic [ref=e125]:
+            - article [ref=e126]:
+              - generic [ref=e127]:
+                - generic [ref=e128]:
+                  - generic [ref=e129]: 拼音
+                  - strong [ref=e130]: tiān
+                - generic [ref=e131]:
+                  - generic [ref=e132]: 天
+                  - generic [ref=e133]:
+                    - generic [ref=e134]: 拆解 大部 · 3画 · 上下结构
+                    - generic [ref=e135]: 组词 天空 天地
+                    - button "查看笔顺" [ref=e136] [cursor=pointer]
+              - generic [ref=e137]:
+                - generic [ref=e138]: 天
+                - generic [ref=e140]: 天
+                - generic [ref=e142]: 天
+                - generic [ref=e144]: 天
+            - article [ref=e158]:
+              - generic [ref=e159]:
+                - generic [ref=e160]:
+                  - generic [ref=e161]: 拼音
+                  - strong [ref=e162]: dì
+                - generic [ref=e163]:
+                  - generic [ref=e164]: 地
+                  - generic [ref=e165]:
+                    - generic [ref=e166]: 拆解 土部 · 3画 · 左右结构
+                    - generic [ref=e167]: 组词 大地 土地
+                    - button "查看笔顺" [ref=e168] [cursor=pointer]
+              - generic [ref=e169]:
+                - generic [ref=e170]: 地
+                - generic [ref=e172]: 地
+                - generic [ref=e174]: 地
+                - generic [ref=e176]: 地
+            - article [ref=e190]:
+              - generic [ref=e191]:
+                - generic [ref=e192]:
+                  - generic [ref=e193]: 拼音
+                  - strong [ref=e194]: rén
+                - generic [ref=e195]:
+                  - generic [ref=e196]: 人
+                  - generic [ref=e197]:
+                    - generic [ref=e198]: 拆解 人部 · 2画 · 独体结构
+                    - generic [ref=e199]: 组词 人民 大人
+                    - button "查看笔顺" [ref=e200] [cursor=pointer]
+              - generic [ref=e201]:
+                - generic [ref=e202]: 人
+                - generic [ref=e204]: 人
+                - generic [ref=e206]: 人
+                - generic [ref=e208]: 人
+            - article [ref=e222]:
+              - generic [ref=e223]:
+                - generic [ref=e224]:
+                  - generic [ref=e225]: 拼音
+                  - strong [ref=e226]: kǒu
+                - generic [ref=e227]:
+                  - generic [ref=e228]: 口
+                  - generic [ref=e229]:
+                    - generic [ref=e230]: 拆解 口部 · 3画 · 独体结构
+                    - generic [ref=e231]: 组词 人口 入口
+                    - button "查看笔顺" [ref=e232] [cursor=pointer]
+              - generic [ref=e233]:
+                - generic [ref=e234]: 口
+                - generic [ref=e236]: 口
+                - generic [ref=e238]: 口
+                - generic [ref=e240]: 口
+            - article [ref=e254]:
+              - generic [ref=e255]:
+                - generic [ref=e256]:
+                  - generic [ref=e257]: 拼音
+                  - strong [ref=e258]: shǒu
+                - generic [ref=e259]:
+                  - generic [ref=e260]: 手
+                  - generic [ref=e261]:
+                    - generic [ref=e262]: 拆解 手部 · 4画 · 独体结构
+                    - generic [ref=e263]: 组词 小手 双手
+                    - button "查看笔顺" [ref=e264] [cursor=pointer]
+              - generic [ref=e265]:
+                - generic [ref=e266]: 手
+                - generic [ref=e268]: 手
+                - generic [ref=e270]: 手
+                - generic [ref=e272]: 手
+          - generic [ref=e286]:
+            - generic [ref=e287]: 写字姿势：头正 · 身直 · 臂开 · 足安
+            - generic [ref=e288]: 1 / 5
+        - region "字帖第 2 页" [ref=e289]:
+          - generic [ref=e290]:
+            - generic [ref=e291]:
+              - generic [ref=e292]: 墨
+              - generic [ref=e293]:
+                - heading "每日汉字练习" [level=3] [ref=e294]
+                - paragraph [ref=e295]: 一看结构 · 二描笔画 · 三写端正
+            - generic [ref=e296]:
+              - generic [ref=e297]: 班级：____________
+              - generic [ref=e298]: 姓名：____________
+              - generic [ref=e299]: 日期：____月____日
+          - generic [ref=e300]:
+            - article [ref=e301]:
+              - generic [ref=e302]:
+                - generic [ref=e303]:
+                  - generic [ref=e304]: 拼音
+                  - strong [ref=e305]: zú
+                - generic [ref=e306]:
+                  - generic [ref=e307]: 足
+                  - generic [ref=e308]:
+                    - generic [ref=e309]: 拆解 足部 · 7画 · 上下结构
+                    - generic [ref=e310]: 组词 手足 足球
+                    - button "查看笔顺" [ref=e311] [cursor=pointer]
+              - generic [ref=e312]:
+                - generic [ref=e313]: 足
+                - generic [ref=e315]: 足
+                - generic [ref=e317]: 足
+                - generic [ref=e319]: 足
+            - article [ref=e333]:
+              - generic [ref=e334]:
+                - generic [ref=e335]:
+                  - generic [ref=e336]: 拼音
+                  - strong [ref=e337]: rì
+                - generic [ref=e338]:
+                  - generic [ref=e339]: 日
+                  - generic [ref=e340]:
+                    - generic [ref=e341]: 拆解 日部 · 4画 · 独体结构
+                    - generic [ref=e342]: 组词 日出 日光
+                    - button "查看笔顺" [ref=e343] [cursor=pointer]
+              - generic [ref=e344]:
+                - generic [ref=e345]: 日
+                - generic [ref=e347]: 日
+                - generic [ref=e349]: 日
+                - generic [ref=e351]: 日
+            - article [ref=e365]:
+              - generic [ref=e366]:
+                - generic [ref=e367]:
+                  - generic [ref=e368]: 拼音
+                  - strong [ref=e369]: yuè
+                - generic [ref=e370]:
+                  - generic [ref=e371]: 月
+                  - generic [ref=e372]:
+                    - generic [ref=e373]: 拆解 月部 · 4画 · 独体结构
+                    - generic [ref=e374]: 组词 月亮 月光
+                    - button "查看笔顺" [ref=e375] [cursor=pointer]
+              - generic [ref=e376]:
+                - generic [ref=e377]: 月
+                - generic [ref=e379]: 月
+                - generic [ref=e381]: 月
+                - generic [ref=e383]: 月
+            - article [ref=e397]:
+              - generic [ref=e398]:
+                - generic [ref=e399]:
+                  - generic [ref=e400]: 拼音
+                  - strong [ref=e401]: shān
+                - generic [ref=e402]:
+                  - generic [ref=e403]: 山
+                  - generic [ref=e404]:
+                    - generic [ref=e405]: 拆解 山部 · 3画 · 独体结构
+                    - generic [ref=e406]: 组词 高山 山水
+                    - button "查看笔顺" [ref=e407] [cursor=pointer]
+              - generic [ref=e408]:
+                - generic [ref=e409]: 山
+                - generic [ref=e411]: 山
+                - generic [ref=e413]: 山
+                - generic [ref=e415]: 山
+            - article [ref=e429]:
+              - generic [ref=e430]:
+                - generic [ref=e431]:
+                  - generic [ref=e432]: 拼音
+                  - strong [ref=e433]: shuǐ
+                - generic [ref=e434]:
+                  - generic [ref=e435]: 水
+                  - generic [ref=e436]:
+                    - generic [ref=e437]: 拆解 水部 · 4画 · 独体结构
+                    - generic [ref=e438]: 组词 河水 水田
+                    - button "查看笔顺" [ref=e439] [cursor=pointer]
+              - generic [ref=e440]:
+                - generic [ref=e441]: 水
+                - generic [ref=e443]: 水
+                - generic [ref=e445]: 水
+                - generic [ref=e447]: 水
+          - generic [ref=e461]:
+            - generic [ref=e462]: 写字姿势：头正 · 身直 · 臂开 · 足安
+            - generic [ref=e463]: 2 / 5
+        - region "字帖第 3 页" [ref=e464]:
+          - generic [ref=e465]:
+            - generic [ref=e466]:
+              - generic [ref=e467]: 墨
+              - generic [ref=e468]:
+                - heading "每日汉字练习" [level=3] [ref=e469]
+                - paragraph [ref=e470]: 一看结构 · 二描笔画 · 三写端正
+            - generic [ref=e471]:
+              - generic [ref=e472]: 班级：____________
+              - generic [ref=e473]: 姓名：____________
+              - generic [ref=e474]: 日期：____月____日
+          - generic [ref=e475]:
+            - article [ref=e476]:
+              - generic [ref=e477]:
+                - generic [ref=e478]:
+                  - generic [ref=e479]: 拼音
+                  - strong [ref=e480]: tián
+                - generic [ref=e481]:
+                  - generic [ref=e482]: 田
+                  - generic [ref=e483]:
+                    - generic [ref=e484]: 拆解 田部 · 5画 · 独体结构
+                    - generic [ref=e485]: 组词 田地 水田
+                    - button "查看笔顺" [ref=e486] [cursor=pointer]
+              - generic [ref=e487]:
+                - generic [ref=e488]: 田
+                - generic [ref=e490]: 田
+                - generic [ref=e492]: 田
+                - generic [ref=e494]: 田
+            - article [ref=e508]:
+              - generic [ref=e509]:
+                - generic [ref=e510]:
+                  - generic [ref=e511]: 拼音
+                  - strong [ref=e512]: huǒ
+                - generic [ref=e513]:
+                  - generic [ref=e514]: 火
+                  - generic [ref=e515]:
+                    - generic [ref=e516]: 拆解 火部 · 4画 · 独体结构
+                    - generic [ref=e517]: 组词 火山 火光
+                    - button "查看笔顺" [ref=e518] [cursor=pointer]
+              - generic [ref=e519]:
+                - generic [ref=e520]: 火
+                - generic [ref=e522]: 火
+                - generic [ref=e524]: 火
+                - generic [ref=e526]: 火
+            - article [ref=e540]:
+              - generic [ref=e541]:
+                - generic [ref=e542]:
+                  - generic [ref=e543]: 拼音
+                  - strong [ref=e544]: shàng
+                - generic [ref=e545]:
+                  - generic [ref=e546]: 上
+                  - generic [ref=e547]:
+                    - generic [ref=e548]: 拆解 一部 · 1画 · 独体结构
+                    - generic [ref=e549]: 组词 上学 上下
+                    - button "查看笔顺" [ref=e550] [cursor=pointer]
+              - generic [ref=e551]:
+                - generic [ref=e552]: 上
+                - generic [ref=e554]: 上
+                - generic [ref=e556]: 上
+                - generic [ref=e558]: 上
+            - article [ref=e572]:
+              - generic [ref=e573]:
+                - generic [ref=e574]:
+                  - generic [ref=e575]: 拼音
+                  - strong [ref=e576]: xià
+                - generic [ref=e577]:
+                  - generic [ref=e578]: 下
+                  - generic [ref=e579]:
+                    - generic [ref=e580]: 拆解 一部 · 1画 · 独体结构
+                    - generic [ref=e581]: 组词 下雨 上下
+                    - button "查看笔顺" [ref=e582] [cursor=pointer]
+              - generic [ref=e583]:
+                - generic [ref=e584]: 下
+                - generic [ref=e586]: 下
+                - generic [ref=e588]: 下
+                - generic [ref=e590]: 下
+            - article [ref=e604]:
+              - generic [ref=e605]:
+                - generic [ref=e606]:
+                  - generic [ref=e607]: 拼音
+                  - strong [ref=e608]: zuǒ
+                - generic [ref=e609]:
+                  - generic [ref=e610]: 左
+                  - generic [ref=e611]:
+                    - generic [ref=e612]: 拆解 工部 · 3画 · 半包围结构
+                    - generic [ref=e613]: 组词 左右 左手
+                    - button "查看笔顺" [ref=e614] [cursor=pointer]
+              - generic [ref=e615]:
+                - generic [ref=e616]: 左
+                - generic [ref=e618]: 左
+                - generic [ref=e620]: 左
+                - generic [ref=e622]: 左
+          - generic [ref=e636]:
+            - generic [ref=e637]: 写字姿势：头正 · 身直 · 臂开 · 足安
+            - generic [ref=e638]: 3 / 5
+        - region "字帖第 4 页" [ref=e639]:
+          - generic [ref=e640]:
+            - generic [ref=e641]:
+              - generic [ref=e642]: 墨
+              - generic [ref=e643]:
+                - heading "每日汉字练习" [level=3] [ref=e644]
+                - paragraph [ref=e645]: 一看结构 · 二描笔画 · 三写端正
+            - generic [ref=e646]:
+              - generic [ref=e647]: 班级：____________
+              - generic [ref=e648]: 姓名：____________
+              - generic [ref=e649]: 日期：____月____日
+          - generic [ref=e650]:
+            - article [ref=e651]:
+              - generic [ref=e652]:
+                - generic [ref=e653]:
+                  - generic [ref=e654]: 拼音
+                  - strong [ref=e655]: yòu
+                - generic [ref=e656]:
+                  - generic [ref=e657]: 右
+                  - generic [ref=e658]:
+                    - generic [ref=e659]: 拆解 口部 · 3画 · 半包围结构
+                    - generic [ref=e660]: 组词 左右 右手
+                    - button "查看笔顺" [ref=e661] [cursor=pointer]
+              - generic [ref=e662]:
+                - generic [ref=e663]: 右
+                - generic [ref=e665]: 右
+                - generic [ref=e667]: 右
+                - generic [ref=e669]: 右
+            - article [ref=e683]:
+              - generic [ref=e684]:
+                - generic [ref=e685]:
+                  - generic [ref=e686]: 拼音
+                  - strong [ref=e687]: dà
+                - generic [ref=e688]:
+                  - generic [ref=e689]: 大
+                  - generic [ref=e690]:
+                    - generic [ref=e691]: 拆解 大部 · 3画 · 独体结构
+                    - generic [ref=e692]: 组词 大小 大山
+                    - button "查看笔顺" [ref=e693] [cursor=pointer]
+              - generic [ref=e694]:
+                - generic [ref=e695]: 大
+                - generic [ref=e697]: 大
+                - generic [ref=e699]: 大
+                - generic [ref=e701]: 大
+            - article [ref=e715]:
+              - generic [ref=e716]:
+                - generic [ref=e717]:
+                  - generic [ref=e718]: 拼音
+                  - strong [ref=e719]: xiǎo
+                - generic [ref=e720]:
+                  - generic [ref=e721]: 小
+                  - generic [ref=e722]:
+                    - generic [ref=e723]: 拆解 小部 · 3画 · 独体结构
+                    - generic [ref=e724]: 组词 大小 小手
+                    - button "查看笔顺" [ref=e725] [cursor=pointer]
+              - generic [ref=e726]:
+                - generic [ref=e727]: 小
+                - generic [ref=e729]: 小
+                - generic [ref=e731]: 小
+                - generic [ref=e733]: 小
+            - article [ref=e747]:
+              - generic [ref=e748]:
+                - generic [ref=e749]:
+                  - generic [ref=e750]: 拼音
+                  - strong [ref=e751]: duō
+                - generic [ref=e752]:
+                  - generic [ref=e753]: 多
+                  - generic [ref=e754]:
+                    - generic [ref=e755]: 拆解 夕部 · 3画 · 上下结构
+                    - generic [ref=e756]: 组词 多少 许多
+                    - button "查看笔顺" [ref=e757] [cursor=pointer]
+              - generic [ref=e758]:
+                - generic [ref=e759]: 多
+                - generic [ref=e761]: 多
+                - generic [ref=e763]: 多
+                - generic [ref=e765]: 多
+            - article [ref=e779]:
+              - generic [ref=e780]:
+                - generic [ref=e781]:
+                  - generic [ref=e782]: 拼音
+                  - strong [ref=e783]: shǎo
+                - generic [ref=e784]:
+                  - generic [ref=e785]: 少
+                  - generic [ref=e786]:
+                    - generic [ref=e787]: 拆解 小部 · 3画 · 上下结构
+                    - generic [ref=e788]: 组词 多少 少年
+                    - button "查看笔顺" [ref=e789] [cursor=pointer]
+              - generic [ref=e790]:
+                - generic [ref=e791]: 少
+                - generic [ref=e793]: 少
+                - generic [ref=e795]: 少
+                - generic [ref=e797]: 少
+          - generic [ref=e811]:
+            - generic [ref=e812]: 写字姿势：头正 · 身直 · 臂开 · 足安
+            - generic [ref=e813]: 4 / 5
+        - region "字帖第 5 页" [ref=e814]:
+          - generic [ref=e815]:
+            - generic [ref=e816]:
+              - generic [ref=e817]: 墨
+              - generic [ref=e818]:
+                - heading "每日汉字练习" [level=3] [ref=e819]
+                - paragraph [ref=e820]: 一看结构 · 二描笔画 · 三写端正
+            - generic [ref=e821]:
+              - generic [ref=e822]: 班级：____________
+              - generic [ref=e823]: 姓名：____________
+              - generic [ref=e824]: 日期：____月____日
+          - generic [ref=e825]:
+            - article [ref=e826]:
+              - generic [ref=e827]:
+                - generic [ref=e828]:
+                  - generic [ref=e829]: 拼音
+                  - strong [ref=e830]: zhōng
+                - generic [ref=e831]:
+                  - generic [ref=e832]: 中
+                  - generic [ref=e833]:
+                    - generic [ref=e834]: 拆解 丨部 · 1画 · 独体结构
+                    - generic [ref=e835]: 组词 中国 中间
+                    - button "查看笔顺" [ref=e836] [cursor=pointer]
+              - generic [ref=e837]:
+                - generic [ref=e838]: 中
+                - generic [ref=e840]: 中
+                - generic [ref=e842]: 中
+                - generic [ref=e844]: 中
+            - article [ref=e858]:
+              - generic [ref=e859]:
+                - generic [ref=e860]:
+                  - generic [ref=e861]: 拼音
+                  - strong [ref=e862]: zhèng
+                - generic [ref=e863]:
+                  - generic [ref=e864]: 正
+                  - generic [ref=e865]:
+                    - generic [ref=e866]: 拆解 止部 · 4画 · 上下结构
+                    - generic [ref=e867]: 组词 正好 正直
+                    - button "查看笔顺" [ref=e868] [cursor=pointer]
+              - generic [ref=e869]:
+                - generic [ref=e870]: 正
+                - generic [ref=e872]: 正
+                - generic [ref=e874]: 正
+                - generic [ref=e876]: 正
+            - article [ref=e890]:
+              - generic [ref=e891]:
+                - generic [ref=e892]:
+                  - generic [ref=e893]: 拼音
+                  - strong [ref=e894]: guó
+                - generic [ref=e895]:
+                  - generic [ref=e896]: 国
+                  - generic [ref=e897]:
+                    - generic [ref=e898]: 拆解 囗部 · 3画 · 全包围结构
+                    - generic [ref=e899]: 组词 中国 祖国
+                    - button "查看笔顺" [ref=e900] [cursor=pointer]
+              - generic [ref=e901]:
+                - generic [ref=e902]: 国
+                - generic [ref=e904]: 国
+                - generic [ref=e906]: 国
+                - generic [ref=e908]: 国
+          - generic [ref=e922]:
+            - generic [ref=e923]: 写字姿势：头正 · 身直 · 臂开 · 足安
+            - generic [ref=e924]: 5 / 5
+  - status

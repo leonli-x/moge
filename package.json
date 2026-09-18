@@ -1,0 +1,21 @@
+{
+  "name": "moge-copybook",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1"
+  },
+  "dependencies": {
+    "cnchar": "3.2.6",
+    "cnchar-radical": "3.2.6",
+    "cnchar-words": "^3.2.6",
+    "hanzi-writer": "3.7.3",
+    "pinyin-pro": "3.28.1"
+  },
+  "devDependencies": {
+    "vite": "7.3.6"
+  }
+}

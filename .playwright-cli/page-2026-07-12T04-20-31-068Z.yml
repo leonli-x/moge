@@ -1,0 +1,164 @@
+- generic [ref=f2e1]:
+  - link "跳到字帖设置" [ref=f2e2] [cursor=pointer]:
+    - /url: "#editor"
+  - banner [ref=f2e3]:
+    - generic [ref=f2e4]:
+      - generic [ref=f2e5]: 墨
+      - generic [ref=f2e6]:
+        - heading "墨格字帖" [level=1] [ref=f2e7]
+        - paragraph [ref=f2e176]: 把每一个字，写进方正里
+    - generic [ref=f2e8]:
+      - generic [ref=f2e177]: 已自动保存
+      - button "生成 PDF / 打印" [ref=f2e9] [cursor=pointer]
+  - main [ref=f2e12]:
+    - complementary "字帖设置" [ref=f2e13]:
+      - generic [ref=f2e14]:
+        - generic [ref=f2e15]:
+          - text: 字帖设置
+          - heading "今天练什么字？" [level=2] [ref=f2e16]
+        - generic [ref=f2e17]: 3 步完成
+      - region [ref=f2e18]:
+        - generic [ref=f2e19]:
+          - generic [ref=f2e20]: "1"
+          - generic [ref=f2e21]:
+            - heading "选择内容" [level=3] [ref=f2e22]
+            - paragraph [ref=f2e23]: 按年级一键填入，也可以继续增删
+        - generic [ref=f2e24]: 常用识字表
+        - group "按年级选择常用汉字" [ref=f2e25]:
+          - button "学前" [ref=f2e26] [cursor=pointer]
+          - button "一" [pressed] [ref=f2e27] [cursor=pointer]
+          - button "二" [ref=f2e28] [cursor=pointer]
+          - button "三" [ref=f2e29] [cursor=pointer]
+          - button "四" [ref=f2e30] [cursor=pointer]
+          - button "五" [ref=f2e31] [cursor=pointer]
+          - button "六" [ref=f2e32] [cursor=pointer]
+        - generic [ref=f2e33] [cursor=pointer]:
+          - generic [ref=f2e34]: 天
+          - generic [ref=f2e35]:
+            - strong [ref=f2e36]: 一年级常用字
+            - generic [ref=f2e37]: 基础识字与生活 · 24 个字
+        - generic [ref=f2e40]:
+          - generic [ref=f2e41]: 练习汉字
+          - generic [ref=f2e42]: 2 / 60
+        - textbox "练习汉字" [ref=f2e43]: 骤颖
+        - paragraph [ref=f2e44]: 支持粘贴课文；标点和重复汉字会自动去除。
+        - alert
+      - region [ref=f2e45]:
+        - generic [ref=f2e46]:
+          - generic [ref=f2e47]: "2"
+          - generic [ref=f2e48]:
+            - heading "练习样式" [level=3] [ref=f2e49]
+            - paragraph [ref=f2e50]: 选择格子和描红数量
+        - group "书写格" [ref=f2e51]:
+          - generic [ref=f2e53]:
+            - generic [ref=f2e54] [cursor=pointer]:
+              - radio "永 田字格" [checked]
+              - generic [ref=f2e55]: 永
+              - generic [ref=f2e57]: 田字格
+            - generic [ref=f2e58] [cursor=pointer]:
+              - radio "永 米字格"
+              - generic [ref=f2e59]: 永
+              - generic [ref=f2e61]: 米字格
+            - generic [ref=f2e62] [cursor=pointer]:
+              - radio "永 回宫格"
+              - generic [ref=f2e63]: 永
+              - generic [ref=f2e65]: 回宫格
+        - generic [ref=f2e66]:
+          - generic [ref=f2e67]:
+            - generic [ref=f2e68]: 每字描红
+            - status [ref=f2e69]: 3 格
+          - slider "每字描红" [ref=f2e70] [cursor=pointer]: "3"
+          - generic [ref=f2e71]:
+            - generic [ref=f2e72]: 少
+            - generic [ref=f2e73]: 多
+        - generic [ref=f2e74]:
+          - generic [ref=f2e75]:
+            - generic [ref=f2e76]: 显示拼音与偏旁
+            - generic [ref=f2e77]: 自动生成声调、部首和结构
+          - checkbox "显示拼音与偏旁" [checked] [ref=f2e79]
+      - region [ref=f2e81]:
+        - generic [ref=f2e82]:
+          - generic [ref=f2e83]: "3"
+          - generic [ref=f2e84]:
+            - heading "纸张信息" [level=3] [ref=f2e85]
+            - paragraph [ref=f2e86]: 打印前补充标题和姓名
+        - generic [ref=f2e87]: 字帖标题
+        - textbox "字帖标题" [ref=f2e88]: 每日汉字练习
+        - group "A4 方向" [ref=f2e89]:
+          - generic [ref=f2e91]:
+            - generic [ref=f2e92]:
+              - radio "横向" [checked]
+              - generic [ref=f2e93] [cursor=pointer]: 横向
+            - generic [ref=f2e94]:
+              - radio "纵向"
+              - generic [ref=f2e95] [cursor=pointer]: 纵向
+      - button "生成 PDF / 打印" [ref=f2e96] [cursor=pointer]
+      - paragraph [ref=f2e99]: 在打印窗口选择“另存为 PDF”，请开启“背景图形”。
+    - region [ref=f2e100]:
+      - generic [ref=f2e101]:
+        - generic [ref=f2e102]:
+          - text: 实时预览
+          - heading "A4 打印效果" [level=2] [ref=f2e103]
+        - generic [ref=f2e104]:
+          - generic [ref=f2e105]: 1 页 · 横向
+          - button "恢复默认设置" [ref=f2e106] [cursor=pointer]
+      - region "字帖第 1 页" [ref=f2e110]:
+        - generic [ref=f2e111]:
+          - generic [ref=f2e112]:
+            - generic [ref=f2e113]: 墨
+            - generic [ref=f2e114]:
+              - heading "每日汉字练习" [level=3] [ref=f2e115]
+              - paragraph [ref=f2e180]: 一看结构 · 二描笔画 · 三写端正
+          - generic [ref=f2e181]:
+            - generic [ref=f2e182]: 班级：____________
+            - generic [ref=f2e183]: 姓名：____________
+            - generic [ref=f2e184]: 日期：____月____日
+        - generic [ref=f2e116]:
+          - article [ref=f2e117]:
+            - generic [ref=f2e118]:
+              - generic [ref=f2e119]:
+                - generic [ref=f2e120]: 拼音
+                - strong [ref=f2e121]: zhòu
+              - generic [ref=f2e122]:
+                - generic [ref=f2e123]: 骤
+                - generic [ref=f2e185]:
+                  - generic [ref=f2e186]: 拆解 马部(3画) · 左右结构
+                  - generic [ref=f2e187]: 笔画 共17画 组词 骤字练习
+                  - button "查看笔顺" [ref=f2e188] [cursor=pointer]
+            - generic [ref=f2e124]:
+              - generic [ref=f2e125]: 骤
+              - generic [ref=f2e127]: 骤
+              - generic [ref=f2e129]: 骤
+              - generic [ref=f2e131]: 骤
+          - article [ref=f2e145]:
+            - generic [ref=f2e146]:
+              - generic [ref=f2e147]:
+                - generic [ref=f2e148]: 拼音
+                - strong [ref=f2e149]: yǐng
+              - generic [ref=f2e150]:
+                - generic [ref=f2e151]: 颖
+                - generic [ref=f2e189]:
+                  - generic [ref=f2e190]: 拆解 页部(6画) · 左右结构
+                  - generic [ref=f2e191]: 笔画 共13画 组词 颖字练习
+                  - button "查看笔顺" [ref=f2e192] [cursor=pointer]
+            - generic [ref=f2e152]:
+              - generic [ref=f2e153]: 颖
+              - generic [ref=f2e155]: 颖
+              - generic [ref=f2e157]: 颖
+              - generic [ref=f2e159]: 颖
+        - generic [ref=f2e173]:
+          - generic [ref=f2e174]: 写字姿势：头正 · 身直 · 臂开 · 足安
+          - generic [ref=f2e175]: 1 / 1
+  - status
+  - dialog [ref=f2e193]:
+    - generic [ref=f2e194]:
+      - generic [ref=f2e195]:
+        - text: Hanzi Writer 笔顺
+        - heading "“骤”字笔顺" [level=2] [ref=f2e196]
+        - paragraph [ref=f2e197]: zhòu · 马部(3画) · 左右结构 · 共17画
+      - button "关闭笔顺演示" [active] [ref=f2e198] [cursor=pointer]
+    - generic "汉字笔顺动画" [ref=f2e202]
+    - generic [ref=f2e259]:
+      - button "播放笔顺" [ref=f2e260] [cursor=pointer]
+      - button "开始临摹" [ref=f2e263] [cursor=pointer]
+    - paragraph [ref=f2e266]: 按正确笔顺在格中书写；点击“播放笔顺”可重新观看。

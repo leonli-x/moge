@@ -1,0 +1,109 @@
+- generic [active] [ref=f1e1]:
+  - link "跳到学习内容" [ref=f1e2] [cursor=pointer]:
+    - /url: "#learning-main"
+  - banner [ref=f1e3]:
+    - link "墨格字帖笔顺学习首页" [ref=f1e4] [cursor=pointer]:
+      - /url: index.html
+      - generic [aria-hidden] [ref=f1e5]: 墨
+      - generic [ref=f1e6]:
+        - heading "墨格字帖" [level=1] [ref=f1e7]
+        - paragraph [ref=f1e8]: 把每一个字，写进方正里
+    - navigation "主导航" [ref=f1e10]:
+      - link "笔顺学习" [ref=f1e11] [cursor=pointer]:
+        - /url: index.html
+      - link "字帖生成器" [ref=f1e12] [cursor=pointer]:
+        - /url: copybook.html
+  - main [ref=f1e13]:
+    - region [ref=f1e14]:
+      - generic [ref=f1e15]:
+        - text: 汉字笔顺学习
+        - heading "认识一个字，先从笔画开始" [level=2] [ref=f1e16]
+        - paragraph [ref=f1e17]: 输入一个汉字，跟着动画一笔一画地写，再看看它能组成哪些词。
+      - generic [ref=f1e18]:
+        - generic [ref=f1e19]: 输入汉字
+        - generic [ref=f1e20]:
+          - textbox "输入汉字" [ref=f1e21]: 永
+          - button "开始学习" [ref=f1e22] [cursor=pointer]
+        - paragraph [ref=f1e25]: 支持简体和繁体，每次学习一个字。按 Enter 也可以重新播放。
+        - alert [ref=f1e26]
+    - generic [ref=f1e27]: 正在循环播放“永”的笔顺
+    - generic [ref=f1e30]:
+      - region [ref=f1e31]:
+        - generic [ref=f1e32]:
+          - generic [ref=f1e33]:
+            - text: 笔顺动画
+            - heading "跟着笔画写一遍" [level=3] [ref=f1e34]
+          - button "重新播放" [ref=f1e35] [cursor=pointer]
+        - img "永 的笔顺动画" [ref=f1e38]
+        - generic [ref=f1e60]:
+          - generic [ref=f1e61]: 播放完成后会自动循环
+          - generic [ref=f1e62]:
+            - generic [aria-hidden] [ref=f1e63]: ↻
+            - text: 循环播放
+        - generic [ref=f1e64]:
+          - generic [aria-hidden] [ref=f1e65]: 永
+          - generic [ref=f1e66]:
+            - generic [ref=f1e67]: 当前汉字
+            - strong [ref=f1e68]: yǒng
+            - generic [ref=f1e69]: 常见读音
+          - generic [ref=f1e70]:
+            - generic [ref=f1e71]:
+              - term [ref=f1e72]: 部首
+              - definition [ref=f1e73]: 水
+            - generic [ref=f1e74]:
+              - term [ref=f1e75]: 结构
+              - definition [ref=f1e76]: 独体结构
+            - generic [ref=f1e77]:
+              - term [ref=f1e78]: 笔画
+              - definition [ref=f1e79]: 5 画
+      - region [ref=f1e80]:
+        - generic [ref=f1e81]:
+          - generic [ref=f1e82]:
+            - text: 田字格
+            - heading "分步看笔顺" [level=3] [ref=f1e83]
+          - generic [ref=f1e84]: 5 画
+        - generic [ref=f1e85]:
+          - img "永 完整字形" [ref=f1e86]:
+            - generic [ref=f1e87]: 永
+            - generic [ref=f1e88]: 参考
+          - img "永 第 1 画" [ref=f1e89]:
+            - generic [ref=f1e93]: "1"
+          - img "永 第 2 画" [ref=f1e94]:
+            - generic [ref=f1e99]: "2"
+          - img "永 第 3 画" [ref=f1e100]:
+            - generic [ref=f1e106]: "3"
+          - img "永 第 4 画" [ref=f1e107]:
+            - generic [ref=f1e114]: "4"
+          - img "永 第 5 画" [ref=f1e115]:
+            - generic [ref=f1e123]: "5"
+      - region [ref=f1e124]:
+        - generic [ref=f1e125]:
+          - generic [ref=f1e126]:
+            - text: 词语积累
+            - heading "这个字可以组成" [level=3] [ref=f1e127]
+          - generic [ref=f1e128]: 8 个词
+        - list [ref=f1e129]:
+          - listitem [ref=f1e130]:
+            - generic [ref=f1e131]: 永别
+            - generic [ref=f1e132]: yǒng bié
+          - listitem [ref=f1e133]:
+            - generic [ref=f1e134]: 永不
+            - generic [ref=f1e135]: yǒng bù
+          - listitem [ref=f1e136]:
+            - generic [ref=f1e137]: 永存
+            - generic [ref=f1e138]: yǒng cún
+          - listitem [ref=f1e139]:
+            - generic [ref=f1e140]: 永恒
+            - generic [ref=f1e141]: yǒng héng
+          - listitem [ref=f1e142]:
+            - generic [ref=f1e143]: 永久
+            - generic [ref=f1e144]: yǒng jiǔ
+          - listitem [ref=f1e145]:
+            - generic [ref=f1e146]: 永久性
+            - generic [ref=f1e147]: yǒng jiǔ xìng
+          - listitem [ref=f1e148]:
+            - generic [ref=f1e149]: 永世
+            - generic [ref=f1e150]: yǒng shì
+          - listitem [ref=f1e151]:
+            - generic [ref=f1e152]: 永远
+            - generic [ref=f1e153]: yǒng yuǎn

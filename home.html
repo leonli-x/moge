@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="墨格书写学习工具，从认识一个字开始，一笔一画把字写好。" />
+    <title>墨格 - 书写学习工具</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23a63225'/%3E%3Ctext x='32' y='45' text-anchor='middle' font-size='42' fill='white'%3E墨%3C/text%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="home-page">
+    <a class="skip-link" href="#home-main">跳到功能入口</a>
+    <svg aria-hidden="true" class="icon-sprite">
+      <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    </svg>
+
+    <header class="app-header home-header">
+      <a class="brand" href="home.html" aria-label="墨格首页">
+        <span class="brand-seal" aria-hidden="true">墨</span>
+        <div>
+          <h1>墨格</h1>
+          <p>把每一个字，写进方正里</p>
+        </div>
+      </a>
+    </header>
+
+    <main class="home-main" id="home-main">
+      <section class="home-hero" aria-labelledby="home-title">
+        <div class="home-hero-copy">
+          <span class="eyebrow">墨格 · 书写学习工具</span>
+          <h2 id="home-title">把每一个字，写进方正里</h2>
+          <p>从认识一个字开始，一笔一画，慢慢写好。</p>
+        </div>
+        <div class="home-hero-art" aria-hidden="true">
+          <span class="home-hero-character">永</span>
+          <span class="home-hero-caption">一字一练</span>
+        </div>
+      </section>
+
+      <section class="feature-section" aria-labelledby="feature-title">
+        <div class="feature-heading">
+          <div>
+            <span class="eyebrow">功能入口</span>
+            <h2 id="feature-title">从这里开始</h2>
+          </div>
+          <p>选择一个练习方向，进入你的书写空间。</p>
+        </div>
+
+        <div class="feature-grid">
+          <a class="feature-card" href="index.html" aria-label="字帖：学习笔顺，认识一个字">
+            <div class="feature-card-visual" aria-hidden="true">
+              <span class="feature-card-character">永</span>
+              <span class="feature-card-seal">字帖</span>
+            </div>
+            <div class="feature-card-copy">
+              <span class="eyebrow">当前功能</span>
+              <h3>字帖</h3>
+              <p>学习笔顺，认识一个字</p>
+            </div>
+            <span class="feature-card-arrow" aria-hidden="true"><svg><use href="#icon-arrow"/></svg></span>
+          </a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
