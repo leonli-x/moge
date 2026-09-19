@@ -158,15 +158,33 @@ function updatePreset() {
   els.presetCard.querySelector(".preset-icon").textContent = item.chars[0];
 }
 
+function modelCell(char) {
+  const data = strokeData.get(char);
+  if (data && Array.isArray(data.strokes) && data.strokes.length) {
+    const paths = data.strokes.map(path => `<path d="${path}" fill="#201d1a"/>`).join("");
+    return `<div class="grid-cell stroke-cell model-cell ${state.grid}" title="${char} 范字"><svg viewBox="0 0 1024 1024" aria-hidden="true"><g transform="translate(0 900) scale(1 -1)">${paths}</g></svg></div>`;
+  }
+  return `<div class="grid-cell ${state.grid}"><span class="cell-char model">${char}</span></div>`;
+}
+
+function traceCell(char) {
+  const data = strokeData.get(char);
+  if (data && Array.isArray(data.strokes) && data.strokes.length) {
+    const paths = data.strokes.map(path => `<path d="${path}" fill="#b8b8b8"/>`).join("");
+    return `<div class="grid-cell stroke-cell trace-cell ${state.grid}" title="${char} 描红"><svg viewBox="0 0 1024 1024" aria-hidden="true"><g transform="translate(0 900) scale(1 -1)">${paths}</g></svg></div>`;
+  }
+  return `<div class="grid-cell ${state.grid}"><span class="cell-char trace">${char}</span></div>`;
+}
+
 function practiceRow(char, extraRows = 0) {
   const info = getCharacterInfo(char);
   const { columns, strokeTotal, traceSlots, totalRows: contentAndPracticeRows } = getRowLayout(char);
   const totalRows = contentAndPracticeRows + extraRows;
   const totalCells = columns * totalRows;
   const cells = [];
-  cells.push(`<div class="grid-cell ${state.grid}"><span class="cell-char model">${char}</span></div>`);
+  cells.push(modelCell(char));
   cells.push(...strokeStepCells(char, strokeTotal));
-  for (let i = 0; i < traceSlots; i++) cells.push(`<div class="grid-cell ${state.grid}"><span class="cell-char trace">${char}</span></div>`);
+  for (let i = 0; i < traceSlots; i++) cells.push(traceCell(char));
   while (cells.length < totalCells) cells.push(`<div class="grid-cell ${state.grid}"></div>`);
   const metaMarkup = state.pinyin
     ? `<div class="meta-item meta-pinyin"><b>拼音</b><strong>${info.pinyin || "&nbsp;"}</strong></div><div class="meta-item"><b>部首</b><strong>${info.radical}</strong><span>${info.struct} · 共${info.strokeCount}画</span></div>`

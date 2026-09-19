@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="100%" height="100%">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <g transform="translate(40, 40)">
+    <path d="M 260 170 C 240 160, 150 160, 110 230 C 70 300, 85 390, 140 410 C 190 425, 240 400, 260 380 L 250 345 C 230 365, 185 385, 150 370 C 115 350, 115 285, 145 235 C 175 190, 230 195, 245 205 Z" fill="#1c1a1b"/>
+    <path d="M 240 120 C 170 120, 70 190, 70 310 C 70 410, 150 460, 230 450" fill="none" stroke="#d10074" stroke-width="8" stroke-linecap="round"/>
+    <polygon points="230,450 210,435 215,465" fill="#d10074"/>
+    <text x="260" y="115" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#d10074">1</text>
+  </g>
+</svg>

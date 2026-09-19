@@ -8,7 +8,9 @@ export default defineConfig({
         index: resolve(process.cwd(), "index.html"),
         zitie: resolve(process.cwd(), "zitie.html"),
         copybook: resolve(process.cwd(), "copybook.html"),
-        math: resolve(process.cwd(), "math.html")
+        math: resolve(process.cwd(), "math.html"),
+        pinyin: resolve(process.cwd(), "pinyin.html"),
+        english: resolve(process.cwd(), "english.html")
       }
     }
   }

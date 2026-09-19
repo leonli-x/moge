@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="小学生汉语拼音字帖生成器，支持声母、韵母、整体认读音节与带笔顺提示，规范四线三格与手写体，可直接在线生成 A4 打印与导出 PDF。" />
+  <title>墨格 - 汉语拼音字帖生成器</title>
+  <link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23a63225'/%3E%3Ctext x='32' y='45' text-anchor='middle' font-size='42' fill='white'%3E墨%3C/text%3E%3C/svg%3E" />
+  <style id="print-page-style">
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/pinyin-CWIqyMwt.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="/assets/styles-DGvzPs5k.css">
+</head>
+
+<body>
+  <a class="skip-link" href="#editor">跳到字帖设置</a>
+  <svg aria-hidden="true" class="icon-sprite">
+    <symbol id="icon-print" viewBox="0 0 24 24">
+      <path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z" />
+    </symbol>
+    <symbol id="icon-rotate" viewBox="0 0 24 24">
+      <path d="M3 12a9 9 0 0 1 15.5-6.2L21 8M21 3v5h-5M21 12a9 9 0 0 1-15.5 6.2L3 16M3 21v-5h5" />
+    </symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24">
+      <path d="m20 6-11 11-5-5" />
+    </symbol>
+    <symbol id="icon-chevron" viewBox="0 0 24 24">
+      <path d="m9 18 6-6-6-6" />
+    </symbol>
+  </svg>
+
+  <header class="app-header">
+    <a class="brand" href="index.html" aria-label="墨格首页">
+      <span class="brand-seal" aria-hidden="true">墨</span>
+      <div>
+        <h1>墨格</h1>
+        <p>把每一个字，写进方正里</p>
+      </div>
+    </a>
+    <div class="header-meta">
+      <nav class="site-nav" aria-label="主导航">
+        <a class="nav-link" href="index.html">首页</a>
+        <a class="nav-link" href="zitie.html">笔顺学习</a>
+        <a class="nav-link" href="copybook.html">字帖生成器</a>
+        <a class="nav-link active" href="pinyin.html" aria-current="page">拼音字帖</a>
+        <a class="nav-link" href="english.html">英语字帖</a>
+        <a class="nav-link" href="math.html">口算题卡</a>
+      </nav>
+      <span class="save-status"><svg><use href="#icon-check" /></svg> 实时排版</span>
+      <button class="button primary header-print" type="button" data-print>
+        <svg><use href="#icon-print" /></svg>
+        生成 PDF / 打印
+      </button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <aside class="editor" id="editor" aria-label="字帖设置">
+      <div class="editor-heading">
+        <div>
+          <span class="eyebrow">拼音字帖设置</span>
+          <h2>练好拼音规范字</h2>
+        </div>
+        <span class="step-count">3 步出帖</span>
+      </div>
+
+      <!-- 第一步：选择拼音类别或自定义输入 -->
+      <section class="setting-section" aria-labelledby="pinyin-content-title">
+        <div class="section-title-row">
+          <span class="step-index">1</span>
+          <div>
+            <h3 id="pinyin-content-title">拼音分类与内容</h3>
+            <p>选择统编小学分类，或自由输入拼音</p>
+          </div>
+        </div>
+
+        <label class="field-label">官方分类选择</label>
+        <div class="pinyin-cat-grid" id="category-tabs" role="group" aria-label="拼音分类选择">
+          <button type="button" class="cat-btn" data-cat="shm" aria-pressed="true">声母表 (23)</button>
+          <button type="button" class="cat-btn" data-cat="dym" aria-pressed="false">单韵母 (6)</button>
+          <button type="button" class="cat-btn" data-cat="fym" aria-pressed="false">复韵母 (9)</button>
+          <button type="button" class="cat-btn" data-cat="qbm" aria-pressed="false">前鼻韵母 (5)</button>
+          <button type="button" class="cat-btn" data-cat="hbm" aria-pressed="false">后鼻韵母 (4)</button>
+          <button type="button" class="cat-btn" data-cat="ztr" aria-pressed="false">整体认读 (16)</button>
+          <button type="button" class="cat-btn" data-cat="all" aria-pressed="false">全部总表 (63)</button>
+          <button type="button" class="cat-btn" data-cat="custom" aria-pressed="false">自定义输入</button>
+        </div>
+
+        <!-- 自定义输入面板 (默认隐藏) -->
+        <div class="custom-input-box" id="custom-input-section" hidden>
+          <div class="field-row" style="margin-top: 14px;">
+            <label class="field-label" for="custom-pinyin-text">输入要练习的拼音</label>
+            <span class="char-count" id="char-count">0 字</span>
+          </div>
+          <textarea id="custom-pinyin-text" rows="4" spellcheck="false"
+            placeholder="支持输入字母、带调拼音（如：bái yún、hàn yǔ pīn yīn）..."></textarea>
+          <div class="custom-actions">
+            <button class="button small secondary" type="button" id="btn-sample-custom">填入示例拼音</button>
+            <button class="button small text-btn" type="button" id="btn-clear-custom">清空</button>
+          </div>
+          <p class="field-help">支持换行、空格分隔；自动规范为手写体单层 ɑ / ɡ。</p>
+        </div>
+      </section>
+
+      <!-- 第二步：笔顺与排版样式 -->
+      <section class="setting-section" aria-labelledby="pinyin-style-title">
+        <div class="section-title-row">
+          <span class="step-index">2</span>
+          <div>
+            <h3 id="pinyin-style-title">笔顺与练习样式</h3>
+            <p>控制是否展示笔顺提示与描红数量</p>
+          </div>
+        </div>
+
+        <!-- 简洁模式开关（默认开启） -->
+        <div class="toggle-row" style="margin-bottom: 16px;">
+          <div>
+            <label for="concise-mode">简洁模式</label>
+            <span>去掉页头部分，只保留页码和练习内容（默认开启）</span>
+          </div>
+          <label class="switch">
+            <input id="concise-mode" type="checkbox" checked />
+            <span></span>
+          </label>
+        </div>
+
+        <!-- 笔顺提示开关（默认关闭） -->
+        <div class="toggle-row" style="margin-bottom: 16px;">
+          <div>
+            <label for="show-stroke-order">每行首格显示笔顺提示</label>
+            <span>标注①②③起笔与走向提示（默认关闭）</span>
+          </div>
+          <label class="switch">
+            <input id="show-stroke-order" type="checkbox" />
+            <span></span>
+          </label>
+        </div>
+
+        <!-- 描红数量滑块 -->
+        <div class="range-field">
+          <div class="field-row">
+            <label class="field-label" for="trace-count">每行描红格数</label>
+            <output id="trace-output" for="trace-count">3 格</output>
+          </div>
+          <input id="trace-count" type="range" min="1" max="6" value="3" />
+          <div class="range-labels"><span>少 (1格)</span><span>多 (6格)</span></div>
+        </div>
+
+        <!-- 四线三格颜色 -->
+        <fieldset>
+          <legend class="field-label">拼音格颜色</legend>
+          <div class="pinyin-color-options" id="grid-color-options">
+            <label class="pinyin-color-chip">
+              <input type="radio" name="gridColor" value="red" checked />
+              <span class="color-swatch red"></span>
+              <b>经典红格</b>
+            </label>
+            <label class="pinyin-color-chip">
+              <input type="radio" name="gridColor" value="blue" />
+              <span class="color-swatch blue"></span>
+              <b>清爽蓝格</b>
+            </label>
+            <label class="pinyin-color-chip">
+              <input type="radio" name="gridColor" value="gray" />
+              <span class="color-swatch gray"></span>
+              <b>极简灰格</b>
+            </label>
+          </div>
+        </fieldset>
+
+        <!-- 中间线虚实样式 -->
+        <fieldset>
+          <legend class="field-label">二三线（中格辅线）式样</legend>
+          <div class="segmented" id="line-style-options">
+            <label><input type="radio" name="lineStyle" value="dashed-middle" checked /><span>中间虚线 (推荐)</span></label>
+            <label><input type="radio" name="lineStyle" value="solid" /><span>四线全实线</span></label>
+          </div>
+        </fieldset>
+      </section>
+
+      <!-- 第三步：纸张方向与打印导出 -->
+      <section class="setting-section" aria-labelledby="paper-title">
+        <div class="section-title-row">
+          <span class="step-index">3</span>
+          <div>
+            <h3 id="paper-title">纸张与导出</h3>
+            <p>标准 A4 页面排版设置</p>
+          </div>
+        </div>
+
+        <fieldset>
+          <legend class="field-label">A4 纸张方向</legend>
+          <div class="segmented" id="orientation-options">
+            <label><input type="radio" name="orientation" value="portrait" checked /><span>纵向 (推荐 12行)</span></label>
+            <label><input type="radio" name="orientation" value="landscape" /><span>横向 (8行)</span></label>
+          </div>
+        </fieldset>
+
+        <button class="button primary print-button" type="button" data-print>
+          <svg><use href="#icon-print" /></svg>
+          生成 PDF / 打印
+        </button>
+        <p class="print-hint">建议在打印对话框中勾选“背景图形”，以确保四线三格线条与背景完好呈现。</p>
+      </section>
+    </aside>
+
+    <!-- 右侧实时 A4 预览面板 -->
+    <section class="preview-panel" aria-labelledby="preview-title">
+      <div class="preview-toolbar">
+        <div>
+          <span class="eyebrow">实时预览</span>
+          <h2 id="preview-title">A4 拼音字帖效果</h2>
+        </div>
+        <div class="preview-info">
+          <span id="page-count-badge">共 1 页</span>
+          <button class="icon-button" id="reset-button" type="button" title="恢复默认设置" aria-label="恢复默认设置">
+            <svg><use href="#icon-rotate" /></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="pages" id="pages" aria-live="polite">
+        <!-- 由 pinyin.js 动态渲染生成 -->
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+
+</html>

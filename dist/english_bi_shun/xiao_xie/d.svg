@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="100%" height="100%">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <g transform="translate(30, 30)">
+    <path d="M 220 220 C 190 220, 140 235, 110 280 C 75 330, 70 400, 110 440 C 145 475, 195 470, 225 435 L 220 450 C 220 465, 235 470, 255 470 L 255 440 C 245 440, 242 435, 242 425 L 280 120 C 285 100, 270 90, 250 95 L 230 240 C 230 230, 225 220, 220 220 Z M 215 265 C 235 265, 245 280, 235 325 L 220 395 C 210 435, 180 440, 160 440 C 130 440, 115 410, 125 365 C 135 315, 175 265, 215 265 Z" fill="#1c1a1b"/>
+    <path d="M 175 185 A 120 135 0 1 0 205 475" fill="none" stroke="#d10074" stroke-width="8" stroke-linecap="round"/>
+    <polygon points="205,475 230,482 218,455" fill="#d10074"/>
+    <text x="185" y="170" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#d10074">1</text>
+    <path d="M 320 140 L 285 450" fill="none" stroke="#d10074" stroke-width="8" stroke-linecap="round"/>
+    <polygon points="285,450 272,425 302,432" fill="#d10074"/>
+    <text x="335" y="145" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#d10074">2</text>
+  </g>
+</svg>
