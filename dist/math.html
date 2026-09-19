@@ -14,9 +14,9 @@
       margin: 0;
     }
   </style>
-  <script type="module" crossorigin src="/assets/math-DHdKtn5U.js"></script>
+  <script type="module" crossorigin src="/assets/math-_glF9WJq.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
-  <link rel="stylesheet" crossorigin href="/assets/styles-DOZaBdRF.css">
+  <link rel="stylesheet" crossorigin href="/assets/styles-CiNxlg3l.css">
 </head>
 
 <body>
@@ -182,16 +182,24 @@
 
         <div class="config-grid-2" style="margin-top: 14px;">
           <div class="config-item">
-            <label for="problem-count">题目总数</label>
-            <select id="problem-count">
-              <option value="25">25 题</option>
-              <option value="30">30 题</option>
-              <option value="50" selected>50 题</option>
-              <option value="60">60 题</option>
-              <option value="80">80 题</option>
-              <option value="100">100 题</option>
-              <option value="120">120 题</option>
-            </select>
+            <div class="field-label-with-tip">
+              <label for="problem-count">题目总数</label>
+              <span class="field-subtip">可手动填</span>
+            </div>
+            <div class="count-input-group">
+              <input type="number" id="problem-count" min="1" max="600" value="50" placeholder="数量" title="可直接手动输入题目数量" />
+              <select id="problem-count-preset" title="快捷选择题目数量" aria-label="快捷选择题目数量">
+                <option value="custom" disabled hidden>自定</option>
+                <option value="25">25 题</option>
+                <option value="30">30 题</option>
+                <option value="50">50 题</option>
+                <option value="60">60 题</option>
+                <option value="80">80 题</option>
+                <option value="100">100 题</option>
+                <option value="120">120 题</option>
+                <option value="180">180 题</option>
+              </select>
+            </div>
           </div>
           <div class="config-item">
             <label for="grid-cols">每行列数</label>

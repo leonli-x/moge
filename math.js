@@ -94,6 +94,7 @@ const els = {
   allowRemainder: document.querySelector("#allow-remainder"),
   sheetTitle: document.querySelector("#sheet-title"),
   problemCount: document.querySelector("#problem-count"),
+  problemCountPreset: document.querySelector("#problem-count-preset"),
   gridCols: document.querySelector("#grid-cols"),
   conciseMode: document.querySelector("#concise-mode"),
   showHeader: document.querySelector("#show-header"),
@@ -718,6 +719,11 @@ function syncControlsWithState() {
   // 卷面
   els.sheetTitle.value = state.sheetTitle;
   els.problemCount.value = String(state.problemCount);
+  if (els.problemCountPreset) {
+    const countStr = String(state.problemCount);
+    const matched = [...els.problemCountPreset.options].some(opt => opt.value === countStr);
+    els.problemCountPreset.value = matched ? countStr : "custom";
+  }
   els.gridCols.value = String(state.gridCols);
   els.conciseMode.checked = Boolean(state.conciseMode);
   els.showHeader.checked = Boolean(state.showHeader);
@@ -864,10 +870,42 @@ function initEvents() {
     render();
   });
 
-  els.problemCount.addEventListener("change", () => {
-    state.problemCount = parseInt(els.problemCount.value, 10);
+  let countInputTimer = null;
+  const updateProblemCount = (newVal) => {
+    let val = parseInt(newVal, 10);
+    if (isNaN(val) || val <= 0) val = 50;
+    if (val > 600) val = 600;
+    state.problemCount = val;
+    els.problemCount.value = String(val);
+    if (els.problemCountPreset) {
+      const countStr = String(val);
+      const matched = [...els.problemCountPreset.options].some(opt => opt.value === countStr);
+      els.problemCountPreset.value = matched ? countStr : "custom";
+    }
+    persistState();
     generateWorksheet();
     render();
+  };
+
+  if (els.problemCountPreset) {
+    els.problemCountPreset.addEventListener("change", () => {
+      const val = parseInt(els.problemCountPreset.value, 10);
+      if (val) {
+        updateProblemCount(val);
+      }
+    });
+  }
+
+  els.problemCount.addEventListener("input", () => {
+    clearTimeout(countInputTimer);
+    countInputTimer = setTimeout(() => {
+      updateProblemCount(els.problemCount.value);
+    }, 450);
+  });
+
+  els.problemCount.addEventListener("change", () => {
+    clearTimeout(countInputTimer);
+    updateProblemCount(els.problemCount.value);
   });
 
   els.gridCols.addEventListener("change", () => {
