@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="小学生口算练习题生成器，支持加减乘除、表内乘除法、凑十破十法、四则混合运算，一键生成 A4 高清可打印 PDF 题单与参考答案。" />
+  <title>墨格 - 小学生口算练习卡生成器</title>
+  <link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23a63225'/%3E%3Ctext x='32' y='45' text-anchor='middle' font-size='42' fill='white'%3E墨%3C/text%3E%3C/svg%3E" />
+  <style id="print-page-style">
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/math-BooN1vpk.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="/assets/styles-RPgMrxLh.css">
+</head>
+
+<body>
+  <a class="skip-link" href="#editor">跳到题卡设置</a>
+  <svg aria-hidden="true" class="icon-sprite">
+    <symbol id="icon-print" viewBox="0 0 24 24">
+      <path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z" />
+    </symbol>
+    <symbol id="icon-rotate" viewBox="0 0 24 24">
+      <path d="M3 12a9 9 0 0 1 15.5-6.2L21 8M21 3v5h-5M21 12a9 9 0 0 1-15.5 6.2L3 16M3 21v-5h5" />
+    </symbol>
+    <symbol id="icon-copy" viewBox="0 0 24 24">
+      <path d="M8 4v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7.242a2 2 0 0 0-.602-1.43L16.08 2.57A2 2 0 0 0 14.65 2H10a2 2 0 0 0-2 2z" />
+      <path d="M16 18v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h2" />
+    </symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24">
+      <path d="m20 6-11 11-5-5" />
+    </symbol>
+    <symbol id="icon-sparkles" viewBox="0 0 24 24">
+      <path d="m12 3 1.912 5.813a2 2 0 0 0 1.275 1.275L21 12l-5.813 1.912a2 2 0 0 0-1.275 1.275L12 21l-1.912-5.813a2 2 0 0 0-1.275-1.275L3 12l5.813-1.912a2 2 0 0 0 1.275-1.275L12 3z" />
+    </symbol>
+  </svg>
+
+  <header class="app-header">
+    <a class="brand" href="index.html" aria-label="墨格首页">
+      <span class="brand-seal" aria-hidden="true">墨</span>
+      <div>
+        <h1>墨格</h1>
+        <p>把每一个字，写进方正里</p>
+      </div>
+    </a>
+    <div class="header-meta">
+      <nav class="site-nav" aria-label="主导航">
+        <a class="nav-link" href="index.html">首页</a>
+        <a class="nav-link" href="zitie.html">笔顺学习</a>
+        <a class="nav-link" href="copybook.html">字帖生成器</a>
+        <a class="nav-link active" href="math.html" aria-current="page">口算题卡</a>
+      </nav>
+      <span class="save-status"><svg><use href="#icon-check" /></svg> 实时预览</span>
+      <button class="button secondary header-refresh" id="btn-refresh-head" type="button">
+        <svg><use href="#icon-sparkles" /></svg>
+        换一批
+      </button>
+      <button class="button primary header-print" type="button" data-print>
+        <svg><use href="#icon-print" /></svg>
+        生成 PDF / 打印
+      </button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <aside class="editor" id="editor" aria-label="题卡设置">
+      <div class="editor-heading">
+        <div>
+          <span class="eyebrow">小学数学题单</span>
+          <h2>定制口算练习</h2>
+        </div>
+        <span class="step-count">3 步出卷</span>
+      </div>
+
+      <!-- 第一步：选择学段与题型 -->
+      <section class="setting-section" aria-labelledby="preset-title">
+        <div class="section-title-row">
+          <span class="step-index">1</span>
+          <div>
+            <h3 id="preset-title">年级与专题</h3>
+            <p>按年级一键配置，也可以自定义运算规则</p>
+          </div>
+        </div>
+
+        <label class="field-label">年级快捷选择</label>
+        <div class="grade-tabs" id="grade-tabs" role="group" aria-label="选择年级">
+          <button type="button" data-grade="1" aria-pressed="true">一年级</button>
+          <button type="button" data-grade="2" aria-pressed="false">二年级</button>
+          <button type="button" data-grade="3" aria-pressed="false">三年级</button>
+          <button type="button" data-grade="4" aria-pressed="false">四年级</button>
+          <button type="button" data-grade="5" aria-pressed="false">五六年级</button>
+          <button type="button" data-grade="custom" aria-pressed="false">自定义</button>
+        </div>
+
+        <label class="field-label" style="margin-top: 14px;">专项精练题型</label>
+        <div class="math-preset-subgroup" id="subpreset-container">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- 详细运算规则自定义区 -->
+        <div id="custom-rule-box">
+          <label class="field-label">运算类型（可多选）</label>
+          <div class="op-chips" id="op-chips">
+            <label class="op-chip"><input type="checkbox" name="op" value="+" checked /><span>加法 +</span></label>
+            <label class="op-chip"><input type="checkbox" name="op" value="-" checked /><span>减法 −</span></label>
+            <label class="op-chip"><input type="checkbox" name="op" value="*" /><span>乘法 ×</span></label>
+            <label class="op-chip"><input type="checkbox" name="op" value="/" /><span>除法 ÷</span></label>
+          </div>
+
+          <div class="config-grid-2">
+            <div class="config-item">
+              <label for="max-number">数值范围</label>
+              <select id="max-number">
+                <option value="10">10 以内</option>
+                <option value="20" selected>20 以内</option>
+                <option value="50">50 以内</option>
+                <option value="100">100 以内</option>
+                <option value="500">500 以内</option>
+                <option value="1000">1000 以内</option>
+              </select>
+            </div>
+            <div class="config-item">
+              <label for="term-count">运算项数</label>
+              <select id="term-count">
+                <option value="2" selected>两数运算 (A ± B)</option>
+                <option value="3">三数运算 (A ± B ± C)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="config-grid-2">
+            <div class="config-item">
+              <label for="question-type">题目呈现形式</label>
+              <select id="question-type">
+                <option value="standard" selected>标准算式 8 + 5 = ___</option>
+                <option value="fill-blank">填未知数 8 + ( ) = 13</option>
+                <option value="compare-size">比较大小 8 + 5 ○ 14</option>
+              </select>
+            </div>
+            <div class="config-item">
+              <label for="carry-rule">进退位要求</label>
+              <select id="carry-rule">
+                <option value="any" selected>不限（综合练习）</option>
+                <option value="carry">仅进位/退位题</option>
+                <option value="no-carry">仅不进位/不退位</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="toggle-row">
+            <div>
+              <label for="allow-remainder">除法允许余数</label>
+              <span>关闭时只出整除算式，开启时形如 17 ÷ 5 = 3……2</span>
+            </div>
+            <label class="switch">
+              <input id="allow-remainder" type="checkbox" />
+              <span></span>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- 第二步：卷面排版设置 -->
+      <section class="setting-section" aria-labelledby="format-title">
+        <div class="section-title-row">
+          <span class="step-index">2</span>
+          <div>
+            <h3 id="format-title">卷面排版</h3>
+            <p>调整每页题量、列数与卷头信息</p>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <label class="field-label" for="sheet-title">试卷主标题</label>
+        </div>
+        <input type="text" id="sheet-title" value="小学数学口算天天练" maxlength="30" />
+
+        <div class="config-grid-2" style="margin-top: 14px;">
+          <div class="config-item">
+            <label for="problem-count">题目总数</label>
+            <select id="problem-count">
+              <option value="25">25 题</option>
+              <option value="30">30 题</option>
+              <option value="50" selected>50 题</option>
+              <option value="60">60 题</option>
+              <option value="80">80 题</option>
+              <option value="100">100 题</option>
+              <option value="120">120 题</option>
+            </select>
+          </div>
+          <div class="config-item">
+            <label for="grid-cols">每行列数</label>
+            <select id="grid-cols">
+              <option value="3">3 列（间距大·字号大）</option>
+              <option value="4" selected>4 列（标准紧凑）</option>
+              <option value="5">5 列（密集刷题）</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="toggle-row" style="margin-top: 6px;">
+          <div>
+            <label for="show-num">显示题号</label>
+            <span>标注 1. 2. 3. 便于孩子按序作答</span>
+          </div>
+          <label class="switch">
+            <input id="show-num" type="checkbox" checked />
+            <span></span>
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <div>
+            <label for="show-answer-sheet">附加参考答案页</label>
+            <span>在练习页末尾自动生成答案卡，方便家长快速批改</span>
+          </div>
+          <label class="switch">
+            <input id="show-answer-sheet" type="checkbox" checked />
+            <span></span>
+          </label>
+        </div>
+      </section>
+
+      <!-- 第三步：纸张方向与打印 -->
+      <section class="setting-section" aria-labelledby="paper-title">
+        <div class="section-title-row">
+          <span class="step-index">3</span>
+          <div>
+            <h3 id="paper-title">纸张与导出</h3>
+            <p>选择 A4 纸张排版方向并输出</p>
+          </div>
+        </div>
+
+        <fieldset>
+          <legend class="field-label">A4 打印方向</legend>
+          <div class="segmented" id="orientation-options">
+            <label><input type="radio" name="orientation" value="portrait" checked /><span>纵向 (推荐)</span></label>
+            <label><input type="radio" name="orientation" value="landscape" /><span>横向</span></label>
+          </div>
+        </fieldset>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 18px;">
+          <button class="button secondary" id="btn-refresh" type="button">
+            <svg><use href="#icon-rotate" /></svg>
+            换一批题目
+          </button>
+          <button class="button secondary" id="btn-copy-text" type="button">
+            <svg><use href="#icon-copy" /></svg>
+            复制纯文本
+          </button>
+        </div>
+
+        <button class="button primary print-button" type="button" data-print>
+          <svg><use href="#icon-print" /></svg>
+          生成 PDF / 打印
+        </button>
+        <p class="print-hint">在打印窗口的“目标打印机”中选择“另存为 PDF”，勾选“背景图形”可获最清晰排版。</p>
+      </section>
+    </aside>
+
+    <!-- 右侧实时 A4 预览面板 -->
+    <section class="preview-panel" aria-labelledby="preview-title">
+      <div class="preview-toolbar">
+        <div>
+          <span class="eyebrow">实时预览</span>
+          <h2 id="preview-title">A4 打印效果</h2>
+        </div>
+        <div class="preview-info">
+          <span id="sheet-info-badge">共 50 题 · 1 页</span>
+          <button class="icon-button" id="btn-toolbar-refresh" type="button" title="换一批题目" aria-label="换一批题目">
+            <svg><use href="#icon-sparkles" /></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="pages" id="pages" aria-live="polite">
+        <!-- Rendered dynamically by math.js -->
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+
+</html>

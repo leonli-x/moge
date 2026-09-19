@@ -1,46 +1,88 @@
 <!doctype html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="墨格书写学习工具，从认识一个字开始，一笔一画把字写好。" />
-    <title>墨格 - 书写学习工具</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23a63225'/%3E%3Ctext x='32' y='45' text-anchor='middle' font-size='42' fill='white'%3E墨%3C/text%3E%3C/svg%3E" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body class="home-page">
-    <a class="skip-link" href="#home-main">跳到功能入口</a>
-    <svg aria-hidden="true" class="icon-sprite">
-      <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
-    </svg>
 
-    <header class="app-header home-header">
-      <a class="brand" href="index.html" aria-label="墨格首页">
-        <span class="brand-seal" aria-hidden="true">墨</span>
-        <div>
-          <h1>墨格</h1>
-          <p>把每一个字，写进方正里</p>
-        </div>
-      </a>
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="墨格书写学习工具，从认识一个字开始，一笔一画把字写好。" />
+  <title>墨格 - 书写学习工具</title>
+  <link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23a63225'/%3E%3Ctext x='32' y='45' text-anchor='middle' font-size='42' fill='white'%3E墨%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
 
-    <main class="home-main" id="home-main">
-  
+<body class="home-page">
+  <a class="skip-link" href="#home-main">跳到功能入口</a>
+  <svg aria-hidden="true" class="icon-sprite">
+    <symbol id="icon-arrow" viewBox="0 0 24 24">
+      <path d="M5 12h14M13 6l6 6-6 6" />
+    </symbol>
+  </svg>
 
-      <section class="feature-section" aria-labelledby="feature-title">
-        <div class="feature-grid">
-          <a class="feature-card" href="zitie.html" aria-label="字帖：学习笔顺，认识一个字">
-            <div class="feature-card-visual" aria-hidden="true">
-              <span class="feature-card-character">永</span>
-              <span class="feature-card-seal">字帖</span>
+  <header class="app-header home-header">
+    <a class="brand" href="index.html" aria-label="墨格首页">
+      <span class="brand-seal" aria-hidden="true">墨</span>
+      <div>
+        <h1>墨格</h1>
+        <p>把每一个字，写进方正里</p>
+      </div>
+    </a>
+    <div class="header-meta">
+      <nav class="site-nav" aria-label="主导航">
+        <a class="nav-link active" href="index.html" aria-current="page">首页</a>
+        <a class="nav-link" href="zitie.html">笔顺学习</a>
+        <a class="nav-link" href="copybook.html">字帖生成器</a>
+        <a class="nav-link" href="math.html">口算题卡</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="home-main" id="home-main">
+    <section class="feature-section" aria-labelledby="feature-title">
+      <div class="feature-grid">
+        <a class="feature-card" href="zitie.html" aria-label="字帖：学习笔顺，认识一个字">
+          <div class="feature-card-visual" aria-hidden="true">
+            <span class="feature-card-character">永</span>
+          </div>
+          <div class="feature-card-copy">
+            <p>学习笔顺，认识一个字</p>
+          </div>
+          <span class="feature-card-arrow" aria-hidden="true"><svg>
+              <use href="#icon-arrow" />
+            </svg></span>
+        </a>
+
+        <a class="feature-card" href="copybook.html" aria-label="字帖生成：定制字帖，生成 A4 描红纸">
+          <div class="feature-card-visual" aria-hidden="true">
+            <span class="feature-card-character" style="font-size: 68px;">帖</span>
+          </div>
+          <div class="feature-card-copy">
+            <p>定制汉字，生成描红字帖</p>
+          </div>
+          <span class="feature-card-arrow" aria-hidden="true"><svg>
+              <use href="#icon-arrow" />
+            </svg></span>
+        </a>
+
+        <a class="feature-card" href="math.html" aria-label="口算题卡：生成小学数学题，导出 PDF 练习卷">
+          <div class="feature-card-visual" aria-hidden="true">
+            <div class="feature-card-math-symbols">
+              <span class="math-sym sym-plus">+</span>
+              <span class="math-sym sym-minus">−</span>
+              <span class="math-sym sym-times">×</span>
+              <span class="math-sym sym-div">÷</span>
             </div>
-            <div class="feature-card-copy">
-              <p>学习笔顺，认识一个字</p>
-            </div>
-            <span class="feature-card-arrow" aria-hidden="true"><svg><use href="#icon-arrow"/></svg></span>
-          </a>
-        </div>
-      </section>
-    </main>
-  </body>
+          </div>
+          <div class="feature-card-copy">
+            <p>口算天天练，生成数学题卡</p>
+          </div>
+          <span class="feature-card-arrow" aria-hidden="true"><svg>
+              <use href="#icon-arrow" />
+            </svg></span>
+        </a>
+      </div>
+    </section>
+  </main>
+</body>
+
 </html>

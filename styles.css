@@ -201,6 +201,228 @@ input[type="range"] { width: 100%; accent-color: var(--cinnabar); cursor: pointe
 .feature-card-arrow svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .feature-card:hover .feature-card-arrow { border-color: #d5a59d; background: var(--cinnabar-soft); transform: translateX(2px); }
 
+/* 数学卡片视觉增强 */
+.feature-card-math-symbols { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; place-items: center; }
+.math-sym { font-family: "PingFang SC", "Segoe UI", system-ui, sans-serif; font-size: 32px; font-weight: 700; line-height: 1; }
+.sym-plus { color: var(--cinnabar); }
+.sym-minus { color: var(--focus); }
+.sym-times { color: #d97706; }
+.sym-div { color: #2563eb; }
+
+/* 数学试卷生成器专属样式 */
+.math-preset-subgroup { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 16px; }
+.math-preset-btn { border: 1px solid var(--line-strong); background: white; color: var(--ink); border-radius: 999px; padding: 5px 12px; font-size: 12px; cursor: pointer; transition: all .16s ease; }
+.math-preset-btn:hover { border-color: var(--cinnabar); color: var(--cinnabar); background: var(--cinnabar-soft); }
+.math-preset-btn.active { border-color: var(--cinnabar); background: var(--cinnabar); color: white; font-weight: 600; box-shadow: 0 2px 6px rgba(166, 50, 37, .25); }
+
+.op-chips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 12px; }
+.op-chip { position: relative; cursor: pointer; }
+.op-chip input { position: absolute; opacity: 0; pointer-events: none; }
+.op-chip span { display: flex; align-items: center; justify-content: center; height: 38px; border: 1px solid var(--line-strong); border-radius: var(--radius); background: white; font-size: 15px; font-weight: 700; color: var(--ink-soft); transition: all .18s; }
+.op-chip input:checked + span { border-color: var(--cinnabar); background: var(--cinnabar-soft); color: var(--cinnabar); }
+
+.config-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.config-item label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 5px; color: var(--ink-soft); }
+.config-item select, .config-item input[type="number"] { width: 100%; height: 38px; border: 1px solid var(--line-strong); border-radius: var(--radius); padding: 0 10px; background: white; font-size: 13px; color: var(--ink); }
+.config-item select:focus, .config-item input[type="number"]:focus { border-color: var(--focus); outline: none; box-shadow: 0 0 0 3px rgba(35, 100, 122, .12); }
+
+.segmented.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+.segmented.cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+/* A4 数学题单样式 */
+.sheet.math-sheet {
+  background: var(--paper);
+  color: #1a1816;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  padding: 4.2% 4.8%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  user-select: text;
+}
+.sheet.math-sheet.portrait {
+  aspect-ratio: 210 / 297;
+  padding: 4.8% 5.2% 4%;
+}
+.sheet.math-sheet.landscape {
+  aspect-ratio: 297 / 210;
+  padding: 3.8% 4.5% 3.2%;
+}
+
+.math-sheet-header {
+  flex: 0 0 auto;
+  border-bottom: 1.5px solid #231f1b;
+  padding-bottom: 8px;
+  margin-bottom: 14px;
+}
+.math-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.math-sheet-title {
+  margin: 0;
+  font-family: "Songti SC", "SimSun", "STSong", serif;
+  font-size: clamp(16px, 2.2vw, 24px);
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #1a1816;
+}
+.math-sheet-tag {
+  font-size: clamp(9px, 1.1vw, 12px);
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--line-strong);
+  color: var(--ink-soft);
+  background: #fbf9f5;
+}
+.math-sheet-motto {
+  margin: 2px 0 8px;
+  font-size: clamp(9px, 1vw, 11px);
+  color: var(--ink-soft);
+  letter-spacing: 1px;
+}
+.math-sheet-info-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  gap: 8px;
+  font-size: clamp(9px, 1.1vw, 12px);
+  color: #333;
+  padding-top: 4px;
+}
+.info-field {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  white-space: nowrap;
+}
+.info-line {
+  display: inline-block;
+  border-bottom: 1px solid #666;
+  min-width: 40px;
+  height: 12px;
+}
+.info-line.wide { min-width: 60px; }
+.info-stars { letter-spacing: 2px; color: #999; font-size: 13px; }
+
+/* 题目网格 */
+.math-problems-container {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.math-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--math-cols, 3), 1fr);
+  column-gap: clamp(12px, 2.5vw, 28px);
+  row-gap: clamp(8px, 1.4vw, 16px);
+  align-content: start;
+}
+.math-problem {
+  display: flex;
+  align-items: baseline;
+  font-size: clamp(12px, 1.45vw, 16px);
+  line-height: 1.5;
+  white-space: nowrap;
+  color: #111;
+  font-variant-numeric: tabular-nums;
+}
+.math-problem.fill-blank .blank-symbol {
+  display: inline-block;
+  min-width: 28px;
+  border-bottom: 1.2px solid #222;
+  margin: 0 2px;
+  text-align: center;
+  height: 16px;
+}
+.math-problem.compare-size .circle-symbol {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1.2px solid #555;
+  border-radius: 50%;
+  margin: 0 4px;
+  font-size: 11px;
+}
+.problem-num {
+  flex: 0 0 auto;
+  color: #888;
+  font-size: 0.85em;
+  margin-right: 4px;
+  user-select: none;
+}
+.problem-expr {
+  font-family: "PingFang SC", "Segoe UI", system-ui, sans-serif;
+  letter-spacing: 0.5px;
+}
+.problem-blank-line {
+  display: inline-block;
+  border-bottom: 1px solid #777;
+  min-width: 32px;
+  margin-left: 2px;
+}
+
+/* 答案卡页 */
+.sheet.math-sheet.answer-key {
+  border-top: 4px solid var(--cinnabar);
+}
+.answer-key-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--cinnabar);
+  font-weight: 700;
+  font-size: 13px;
+  background: var(--cinnabar-soft);
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+}
+.answer-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--ans-cols, 5), 1fr);
+  column-gap: 12px;
+  row-gap: 6px;
+  font-size: clamp(10px, 1.1vw, 13px);
+  color: #333;
+}
+.answer-item {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-variant-numeric: tabular-nums;
+  border-bottom: 1px dashed #eee;
+  padding-bottom: 2px;
+}
+.answer-num {
+  color: #999;
+  font-size: 0.88em;
+}
+.answer-val {
+  font-weight: 600;
+  color: var(--cinnabar);
+}
+
+.math-sheet-footer {
+  flex: 0 0 auto;
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px dashed #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: clamp(8px, 0.9vw, 11px);
+  color: #8c857d;
+}
+
+
 /* 汉字笔顺学习页 */
 .learning-page { background: var(--canvas); }
 .learning-page .app-header { position: sticky; }
@@ -367,6 +589,8 @@ input[type="range"] { width: 100%; accent-color: var(--cinnabar); cursor: pointe
   .workspace, .preview-panel, .pages { display: block; margin: 0; padding: 0; max-width: none; background: white; }
   .sheet, .sheet.portrait { width: 297mm; height: 210mm; max-width: none; aspect-ratio: auto; margin: 0; padding: 8mm; box-shadow: none; break-after: page; page-break-after: always; }
   .sheet.portrait { width: 210mm; height: 297mm; padding: 8mm; }
+  .sheet.math-sheet.portrait { width: 210mm; height: 297mm; padding: 12mm 14mm 10mm; box-sizing: border-box; }
+  .sheet.math-sheet.landscape { width: 297mm; height: 210mm; padding: 10mm 14mm 8mm; box-sizing: border-box; }
   .sheet::after { right: 8mm; bottom: 5mm; font-size: 2.2mm; }
   .portrait .char-meta { height: 10mm; }
   .sheet:last-child { break-after: auto; page-break-after: auto; }
@@ -375,5 +599,11 @@ input[type="range"] { width: 100%; accent-color: var(--cinnabar); cursor: pointe
   .meta-item strong { font-size: 4mm; }
   .meta-pinyin strong { font-size: 2.8mm; line-height: 1.15; }
   .meta-item b, .meta-item span { font-size: 2.2mm; }
+  
+  .math-sheet-title { font-size: 18pt; }
+  .math-problem { font-size: 12pt; line-height: 2.1; }
+  .math-grid { column-gap: 20pt; row-gap: 8pt; }
+  .answer-grid { column-gap: 16pt; row-gap: 5pt; font-size: 10pt; }
+  
   * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
 }

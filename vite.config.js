@@ -7,7 +7,8 @@ export default defineConfig({
       input: {
         index: resolve(process.cwd(), "index.html"),
         zitie: resolve(process.cwd(), "zitie.html"),
-        copybook: resolve(process.cwd(), "copybook.html")
+        copybook: resolve(process.cwd(), "copybook.html"),
+        math: resolve(process.cwd(), "math.html")
       }
     }
   }
