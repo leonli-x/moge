@@ -1,7 +1,7 @@
 // 墨格 - 小学生口算练习卡生成器
 // 提供1-6年级数学专题、自定义四则运算、逆向填空、比大小、自动A4分页排版与参考答案生成
 
-const STORAGE_KEY = "moge-math-settings-v1";
+const STORAGE_KEY = "moge-math-settings-v2";
 
 // 预设专题配置
 const PRESETS = {
@@ -71,7 +71,9 @@ const DEFAULT_STATE = {
   problemCount: 50,
   gridCols: 4,
   showNum: true,
-  showAnswerSheet: true,
+  conciseMode: true,
+  showHeader: false,
+  showAnswerSheet: false,
   orientation: "portrait"
 };
 
@@ -93,6 +95,8 @@ const els = {
   sheetTitle: document.querySelector("#sheet-title"),
   problemCount: document.querySelector("#problem-count"),
   gridCols: document.querySelector("#grid-cols"),
+  conciseMode: document.querySelector("#concise-mode"),
+  showHeader: document.querySelector("#show-header"),
   showNum: document.querySelector("#show-num"),
   showAnswerSheet: document.querySelector("#show-answer-sheet"),
   orientationOptions: document.querySelector("#orientation-options"),
@@ -235,7 +239,8 @@ function generateSingleProblem() {
         raw: `${exprText} ${symbol} ${rightVal}`,
         expr: `${exprText} <span class="circle-symbol"></span> ${rightVal}`,
         answer: symbol,
-        key: exprText
+        key: exprText,
+        qType: "compare-size"
       };
     }
     return {
@@ -382,7 +387,8 @@ function formatProblem(nums, ops, ans, questionType) {
       raw: `${exprDisplay} = ${ans} (填: ${nums[blankIdx]})`,
       expr: blankExpr,
       answer: String(nums[blankIdx]),
-      key: `blank_${exprDisplay}_${blankIdx}`
+      key: `blank_${exprDisplay}_${blankIdx}`,
+      qType: "fill-blank"
     };
   }
 
@@ -396,7 +402,8 @@ function formatProblem(nums, ops, ans, questionType) {
       raw: `${exprDisplay} ${compSymbol} ${targetVal}`,
       expr: `${exprDisplay} <span class="circle-symbol"></span> ${targetVal}`,
       answer: compSymbol,
-      key: `comp_${exprDisplay}_${targetVal}`
+      key: `comp_${exprDisplay}_${targetVal}`,
+      qType: "compare-size"
     };
   }
 
@@ -405,7 +412,8 @@ function formatProblem(nums, ops, ans, questionType) {
     raw: `${exprDisplay} = ${ans}`,
     expr: `${exprDisplay} = `,
     answer: String(ans),
-    key: `std_${exprDisplay}`
+    key: `std_${exprDisplay}`,
+    qType: "standard"
   };
 }
 
@@ -436,13 +444,20 @@ function generateWorksheet() {
 
 // 计算单页容量并分页
 function paginateProblems(problems) {
-  const { orientation, gridCols, showAnswerSheet } = state;
+  const { orientation, gridCols, showAnswerSheet, conciseMode, showHeader } = state;
   const cols = parseInt(gridCols, 10) || 4;
 
   // 纵向 A4 (210x297mm) 与 横向 A4 (297x210mm) 的题目容纳计算
-  // 首页含标题、激励语与姓名班级考务栏
-  const page1Rows = orientation === "portrait" ? 14 : 9;
-  const otherPageRows = orientation === "portrait" ? 19 : 13;
+  let page1Rows, otherPageRows;
+  if (conciseMode || !showHeader) {
+    // 纯题目简洁模式或无表头：整页无表头占位，充分利用纸张高度
+    page1Rows = orientation === "portrait" ? 20 : 13;
+    otherPageRows = orientation === "portrait" ? 20 : 13;
+  } else {
+    // 显示试卷表头（首页占位约 40mm）
+    page1Rows = orientation === "portrait" ? 14 : 9;
+    otherPageRows = orientation === "portrait" ? 18 : 13;
+  }
 
   const page1Cap = page1Rows * cols;
   const otherCap = otherPageRows * cols;
@@ -497,8 +512,9 @@ function paginateProblems(problems) {
 // 渲染 A4 试卷 HTML
 function renderSheet(pageData, totalPages) {
   const { pageNumber, isFirstPage, isAnswerKey, items } = pageData;
-  const { orientation, gridCols, showNum, sheetTitle } = state;
+  const { orientation, gridCols, showNum, sheetTitle, conciseMode, showHeader } = state;
   const orientationClass = orientation === "portrait" ? "portrait" : "landscape";
+  const conciseClass = conciseMode ? " concise-mode" : "";
 
   if (isAnswerKey) {
     // 渲染参考答案页（紧凑 5 或 6 列排版）
@@ -540,8 +556,9 @@ function renderSheet(pageData, totalPages) {
     const globalIdx = prevItemsCount + idx + 1;
     const numHtml = showNum ? `<span class="problem-num">${globalIdx}.</span>` : "";
     const blankLine = prob.expr.endsWith("= ") ? `<span class="problem-blank-line"></span>` : "";
+    const qClass = prob.qType ? ` ${prob.qType}` : "";
     return `
-      <div class="math-problem">
+      <div class="math-problem${qClass}">
         ${numHtml}
         <span class="problem-expr">${prob.expr}</span>
         ${blankLine}
@@ -549,44 +566,62 @@ function renderSheet(pageData, totalPages) {
     `;
   }).join("");
 
-  // 卷头信息栏
-  const headerHtml = isFirstPage ? `
-    <div class="math-sheet-header">
-      <div class="math-header-top">
-        <h2 class="math-sheet-title">${escapeHtml(sheetTitle)}</h2>
-        <span class="math-sheet-tag">A4 口算练习单</span>
-      </div>
-      <p class="math-sheet-motto">认真审题 · 细心计算 · 书写工整 · 速度与准确兼备</p>
-      <div class="math-sheet-info-bar">
-        <span class="info-field">班级：<span class="info-line"></span></span>
-        <span class="info-field">姓名：<span class="info-line"></span></span>
-        <span class="info-field">日期：<span class="info-line"></span></span>
-        <span class="info-field">用时：<span class="info-line"></span></span>
-        <span class="info-field">得分：<span class="info-line wide"></span></span>
-        <span class="info-field">评级：<span class="info-stars">☆☆☆☆☆</span></span>
-      </div>
-    </div>
-  ` : `
-    <div class="math-sheet-header" style="padding-bottom: 4px; margin-bottom: 10px;">
-      <div class="math-header-top">
-        <strong style="font-size: 13px; color: #444;">${escapeHtml(sheetTitle)} (续)</strong>
-        <span class="info-field" style="font-size: 11px;">姓名：<span class="info-line" style="min-width: 50px;"></span></span>
-      </div>
-    </div>
-  `;
+  const cols = parseInt(gridCols, 10) || 4;
+  const pageRows = Math.max(1, Math.ceil(items.length / cols));
 
-  return `
-    <section class="sheet math-sheet ${orientationClass}" aria-label="口算练习单第 ${pageNumber} 页" data-page-label="${pageNumber} / ${totalPages}">
-      ${headerHtml}
-      <div class="math-problems-container">
-        <div class="math-grid" style="--math-cols: ${gridCols}">
-          ${problemsHtml}
+  // 卷头信息栏（简洁模式下不展示任何卷头；非简洁模式下根据 showHeader 开关展示）
+  let headerHtml = "";
+  if (!conciseMode && showHeader) {
+    if (isFirstPage) {
+      headerHtml = `
+        <div class="math-sheet-header">
+          <div class="math-header-top">
+            <h2 class="math-sheet-title">${escapeHtml(sheetTitle)}</h2>
+            <span class="math-sheet-tag">A4 口算练习单</span>
+          </div>
+          <p class="math-sheet-motto">认真审题 · 细心计算 · 书写工整 · 速度与准确兼备</p>
+          <div class="math-sheet-info-bar">
+            <span class="info-field">班级：<span class="info-line"></span></span>
+            <span class="info-field">姓名：<span class="info-line"></span></span>
+            <span class="info-field">日期：<span class="info-line"></span></span>
+            <span class="info-field">用时：<span class="info-line"></span></span>
+            <span class="info-field">得分：<span class="info-line wide"></span></span>
+            <span class="info-field">评级：<span class="info-stars">☆☆☆☆☆</span></span>
+          </div>
         </div>
-      </div>
+      `;
+    } else {
+      headerHtml = `
+        <div class="math-sheet-header" style="padding-bottom: 4px; margin-bottom: 10px;">
+          <div class="math-header-top">
+            <strong style="font-size: 13px; color: #444;">${escapeHtml(sheetTitle)} (续)</strong>
+            <span class="info-field" style="font-size: 11px;">姓名：<span class="info-line" style="min-width: 50px;"></span></span>
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  // 页脚信息栏（简洁模式下隐藏）
+  let footerHtml = "";
+  if (!conciseMode) {
+    footerHtml = `
       <div class="math-sheet-footer">
         <span>持之以恒，每天进步一点点！</span>
         <span>第 ${pageNumber} 页 / 共 ${totalPages} 页</span>
       </div>
+    `;
+  }
+
+  return `
+    <section class="sheet math-sheet ${orientationClass}${conciseClass}" aria-label="口算练习单第 ${pageNumber} 页" data-page-label="${pageNumber} / ${totalPages}">
+      ${headerHtml}
+      <div class="math-problems-container">
+        <div class="math-grid" style="--math-cols: ${gridCols}; --math-rows: ${pageRows};">
+          ${problemsHtml}
+        </div>
+      </div>
+      ${footerHtml}
     </section>
   `;
 }
@@ -684,6 +719,8 @@ function syncControlsWithState() {
   els.sheetTitle.value = state.sheetTitle;
   els.problemCount.value = String(state.problemCount);
   els.gridCols.value = String(state.gridCols);
+  els.conciseMode.checked = Boolean(state.conciseMode);
+  els.showHeader.checked = Boolean(state.showHeader);
   els.showNum.checked = Boolean(state.showNum);
   els.showAnswerSheet.checked = Boolean(state.showAnswerSheet);
 
@@ -835,6 +872,24 @@ function initEvents() {
 
   els.gridCols.addEventListener("change", () => {
     state.gridCols = parseInt(els.gridCols.value, 10);
+    render();
+  });
+
+  els.conciseMode.addEventListener("change", () => {
+    state.conciseMode = els.conciseMode.checked;
+    if (state.conciseMode) {
+      state.showHeader = false;
+      els.showHeader.checked = false;
+    }
+    render();
+  });
+
+  els.showHeader.addEventListener("change", () => {
+    state.showHeader = els.showHeader.checked;
+    if (state.showHeader) {
+      state.conciseMode = false;
+      els.conciseMode.checked = false;
+    }
     render();
   });
 

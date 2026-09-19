@@ -14,9 +14,9 @@
       margin: 0;
     }
   </style>
-  <script type="module" crossorigin src="/assets/math-BooN1vpk.js"></script>
+  <script type="module" crossorigin src="/assets/math-DHdKtn5U.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
-  <link rel="stylesheet" crossorigin href="/assets/styles-RPgMrxLh.css">
+  <link rel="stylesheet" crossorigin href="/assets/styles-DOZaBdRF.css">
 </head>
 
 <body>
@@ -205,6 +205,28 @@
 
         <div class="toggle-row" style="margin-top: 6px;">
           <div>
+            <label for="concise-mode">简洁纯享模式</label>
+            <span>整页仅展示题目并最大化垂直铺满纸张（无表头与页脚）</span>
+          </div>
+          <label class="switch">
+            <input id="concise-mode" type="checkbox" checked />
+            <span></span>
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <div>
+            <label for="show-header">显示试卷表头</label>
+            <span>包含主标题、班级、姓名、日期、得分考务信息栏</span>
+          </div>
+          <label class="switch">
+            <input id="show-header" type="checkbox" />
+            <span></span>
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <div>
             <label for="show-num">显示题号</label>
             <span>标注 1. 2. 3. 便于孩子按序作答</span>
           </div>
@@ -220,7 +242,7 @@
             <span>在练习页末尾自动生成答案卡，方便家长快速批改</span>
           </div>
           <label class="switch">
-            <input id="show-answer-sheet" type="checkbox" checked />
+            <input id="show-answer-sheet" type="checkbox" />
             <span></span>
           </label>
         </div>
