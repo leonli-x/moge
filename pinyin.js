@@ -94,14 +94,14 @@ export function normalizePinyin(text) {
 }
 
 /**
- * 26个单字母矢量笔画定义（严格遵循统编版四线三格标准）
- * 坐标系：基于 80x80 方格，四线分别为：
- * y1 = 16 (第一线·顶线)
- * y2 = 32 (第二线·上中界线)
- * y3 = 48 (第三线·中下界线 / 基准线)
- * y4 = 64 (第四线·底线)
- * 三格比例：16px : 16px : 16px (严格 1:1:1 官方标准)
- * 字符居中在 x = 0 的局部坐标系中
+ * 26个单字母矢量笔画定义（严格遵循统编版四线三格教育部官方标准）
+ * 坐标系：基于 88x88 视口标准，四线分别为：
+ * y1 = 11 (第一线·顶线)
+ * y2 = 33 (第二线·上中界线)
+ * y3 = 55 (第三线·中下界线 / 基准线)
+ * y4 = 77 (第四线·底线)
+ * 三格比例：22px : 22px : 22px (严格 1:1:1 官方标准)
+ * 字符居中在 x = 0 的局部坐标系中，主体饱满居中格(33~55)，上伸进上格(11~33留空)，下伸进下格(55~77留空)
  */
 export const LETTER_GLYPHS = {
   'ɑ': {
@@ -386,41 +386,41 @@ export function renderPinyinCellSVG({
   const isDashed = lineStyle === 'dashed-middle' || lineStyle === 'dashed';
   const dashAttr = isDashed ? 'stroke-dasharray="3,2.2"' : '';
 
-  // 四线三格基础线：y1=16, y2=32, y3=48, y4=64
-  let linesSVG = `
-    <!-- 四线三格 -->
-    <line x1="0" y1="16" x2="80" y2="16" stroke="${colors.outer}" stroke-width="0.8" />
-    <line x1="0" y1="32" x2="80" y2="32" stroke="${colors.inner}" stroke-width="0.75" ${dashAttr} />
-    <line x1="0" y1="48" x2="80" y2="48" stroke="${colors.inner}" stroke-width="0.75" ${dashAttr} />
-    <line x1="0" y1="64" x2="80" y2="64" stroke="${colors.outer}" stroke-width="0.8" />
-    <line x1="80" y1="16" x2="80" y2="64" stroke="${colors.outer}" stroke-width="0.5" stroke-dasharray="2,2" opacity="0.6" />
+  // 四线三格基准坐标（教育部统编版官方规范）：
+  // y1 = 11 (第一线·顶线)
+  // y2 = 33 (第二线·上中界线)
+  // y3 = 55 (第三线·中下界线/基准线)
+  // y4 = 77 (第四线·底线)
+  // 上格: 11~33 (22px), 中格: 33~55 (22px), 下格: 55~77 (22px) -> 严格等高 1:1:1 官方标准
+  // preserveAspectRatio="none" 确保四线横向100%铺满每格，格与格之间无缝衔接贯通整行
+  const gridSVG = `
+    <svg class="pinyin-grid-svg" viewBox="0 0 100 88" preserveAspectRatio="none">
+      ${isFirstCell ? `<line x1="0" y1="11" x2="0" y2="77" stroke="${colors.outer}" stroke-width="0.8" />` : ''}
+      <line x1="0" y1="11" x2="100" y2="11" stroke="${colors.outer}" stroke-width="0.8" />
+      <line x1="0" y1="33" x2="100" y2="33" stroke="${colors.inner}" stroke-width="0.75" ${dashAttr} />
+      <line x1="0" y1="55" x2="100" y2="55" stroke="${colors.inner}" stroke-width="0.75" ${dashAttr} />
+      <line x1="0" y1="77" x2="100" y2="77" stroke="${colors.outer}" stroke-width="0.8" />
+      <line x1="100" y1="11" x2="100" y2="77" stroke="${colors.outer}" stroke-width="0.5" stroke-dasharray="2,2" opacity="0.6" />
+    </svg>
   `;
 
-  // 若首格展示了官方静态笔顺 SVG，去掉四线三格，直接保留纯白背景
+  // 若首格展示了官方静态笔顺 SVG，直接保留纯白背景
   if (hasBiShunImage) {
     return `
-      <svg class="pinyin-cell-svg" viewBox="0 0 80 80" width="100%" height="100%">
-        <rect width="80" height="80" fill="#ffffff" />
+      <svg class="pinyin-grid-svg" viewBox="0 0 100 88" preserveAspectRatio="none">
+        <rect width="100" height="88" fill="#ffffff" />
       </svg>
     `;
   }
 
   // 空白格（非首格且非描红格）
   if (!isFirstCell && !isTrace) {
-    return `
-      <svg class="pinyin-cell-svg" viewBox="0 0 80 80" width="100%" height="100%">
-        ${linesSVG}
-      </svg>
-    `;
+    return gridSVG;
   }
 
   const letters = parsePinyinSyllable(item);
   if (letters.length === 0) {
-    return `
-      <svg class="pinyin-cell-svg" viewBox="0 0 80 80" width="100%" height="100%">
-        ${linesSVG}
-      </svg>
-    `;
+    return gridSVG;
   }
 
   // 计算多字母横向排布
@@ -431,12 +431,13 @@ export function renderPinyinCellSVG({
 
   // 针对长音节（如 3 或 4 个字母）做自适应缩放以完美契合四线三格
   let scale = 1;
-  if (totalWidth > 56) {
-    scale = 56 / totalWidth;
+  if (totalWidth > 62) {
+    scale = 62 / totalWidth;
   }
 
   let glyphsSVG = '';
-  let currentX = 40 - (totalWidth * scale) / 2;
+  // 视口宽度 88，居中点为 44
+  let currentX = 44 - (totalWidth * scale) / 2;
 
   const strokeColor = isTrace ? colors.trace : '#1c1a17';
   const strokeWidth = isTrace ? '2.4' : (isFirstCell ? '2.8' : '2.5');
@@ -476,12 +477,13 @@ export function renderPinyinCellSVG({
     }
   });
 
-  return `
-    <svg class="pinyin-cell-svg" viewBox="0 0 80 80" width="100%" height="100%">
-      ${linesSVG}
+  const glyphSVG = `
+    <svg class="pinyin-glyph-svg" viewBox="0 0 88 88" preserveAspectRatio="xMidYMid meet">
       ${glyphsSVG}
     </svg>
   `;
+
+  return `${gridSVG}${glyphSVG}`;
 }
 
 /**

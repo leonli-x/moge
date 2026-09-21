@@ -164,10 +164,21 @@ function getWordPhonetic(word) {
   return '';
 }
 
-// 获取字母笔顺 SVG 路径
+// 获取字母笔顺 SVG 路径（优先支持大小写配对如 Aa，以及单独大写 A 或小写 a）
 function getLetterStrokeSvgUrl(letter) {
   if (!letter || letter.length === 0) return null;
-  const firstChar = letter[0];
+  const clean = letter.trim();
+  if (!clean) return null;
+
+  // 大小写配对形式（如 Aa, A a, aA 等）
+  if (clean.length >= 2) {
+    const firstUpper = clean.toUpperCase()[0];
+    if (firstUpper >= 'A' && firstUpper <= 'Z') {
+      return `/english_bi_shun/pairs/${firstUpper}.svg`;
+    }
+  }
+
+  const firstChar = clean[0];
   if (firstChar >= 'A' && firstChar <= 'Z') {
     return `/english_bi_shun/da_xie/${firstChar}.svg`;
   } else if (firstChar >= 'a' && firstChar <= 'z') {
@@ -201,6 +212,37 @@ function formatSentenceWithRootsHTML(sentence, showColors = true) {
   return sentence.replace(/([a-zA-Z]+)/g, match => {
     return formatWordRootHTML(match, showColors);
   });
+}
+
+// 格式化带有词根色彩的 SVG tspan 字符串
+function formatWordRootSvgTspans(word, showColors = true) {
+  if (!word) return '';
+  if (!showColors) {
+    return `<tspan fill="#1e293b">${escapeHTML(word)}</tspan>`;
+  }
+  const parts = decomposeWord(word);
+  return parts.map(p => {
+    let fill = '#1e293b';
+    if (p.type === 'prefix') fill = '#7c3aed';
+    else if (p.type === 'root') fill = '#1d4ed8';
+    else if (p.type === 'suffix') fill = '#059669';
+    else if (p.type === 'compound') fill = '#d97706';
+    return `<tspan fill="${fill}" font-weight="600">${escapeHTML(p.text)}</tspan>`;
+  }).join('');
+}
+
+// 对句子中的所有单词进行词根标注的 SVG tspan 格式化
+function formatSentenceSvgTspans(sentence, showColors = true) {
+  if (!sentence) return '';
+  const tokens = sentence.split(/([a-zA-Z]+)/);
+  return tokens.map(token => {
+    if (!token) return '';
+    if (/^[a-zA-Z]+$/.test(token)) {
+      return formatWordRootSvgTspans(token, showColors);
+    } else {
+      return `<tspan fill="#1e293b">${escapeHTML(token)}</tspan>`;
+    }
+  }).join('');
 }
 
 function escapeHTML(str) {
@@ -250,6 +292,74 @@ function generateFourLineSvg({
       <line x1="0" y1="44" x2="${width}" y2="44" stroke="${baseLineColor}" stroke-width="${baseWidth}" />
       <!-- 第4线：底线 -->
       <line x1="0" y1="60" x2="${width}" y2="60" stroke="${normalLineColor}" stroke-width="${normalWidth}" />
+    </svg>
+  `;
+}
+
+// 按照 PPT 棍棒体规范，精确计算字母在四线三格中的占格与字形参数
+function generateLetterGlyphSvg({ letter, isModel, traceOpacity, fontFamily }) {
+  const opacityAttr = !isModel ? `opacity="${traceOpacity / 100}"` : '';
+  const fontWeight = isModel ? '600' : '500';
+  const clean = letter.trim();
+
+  // 如果是大小写配对形式（如 Aa, Bb, Gg...）
+  if (clean.length === 2) {
+    const c1 = clean[0];
+    const c2 = clean[1];
+    const sz1 = 40; // 大写顶天立地占上中两格 (12~44)
+    let sz2 = 28;  // 小写默认占满中格 (28~44)
+    if ('bdhkl'.includes(c2)) sz2 = 39;      // 上伸字母竖线触碰第1线
+    else if ('gqy'.includes(c2)) sz2 = 33;   // 下伸字母触碰底线
+    else if (c2 === 'p') sz2 = 33;
+    else if (c2 === 't') sz2 = 33;
+    else if (c2 === 'f') sz2 = 38;
+    else if (c2 === 'i') sz2 = 29;
+    else if (c2 === 'j') sz2 = 31;
+
+    return `
+      <svg class="eng-glyph-svg" viewBox="0 0 70 72" preserveAspectRatio="xMidYMid meet">
+        <text x="23" y="44" text-anchor="middle" dominant-baseline="alphabetic"
+              class="letter-svg-text font-${fontFamily}"
+              font-size="${sz1}" font-weight="${fontWeight}"
+              fill="#1e293b" ${opacityAttr}>${escapeHTML(c1)}</text>
+        <text x="48" y="44" text-anchor="middle" dominant-baseline="alphabetic"
+              class="letter-svg-text font-${fontFamily}"
+              font-size="${sz2}" font-weight="${fontWeight}"
+              fill="#1e293b" ${opacityAttr}>${escapeHTML(c2)}</text>
+      </svg>
+    `;
+  }
+
+  // 单字母模式（如仅大写 A 或仅小写 a）
+  let sz = 31;
+  const ch = clean;
+  if (ch >= 'A' && ch <= 'Z') {
+    sz = 45; // 大写占满上中两格 (12~44)
+  } else if ('bdhkl'.includes(ch)) {
+    sz = 44; // 上伸小写占上中两格 (12~44)
+  } else if ('gqy'.includes(ch)) {
+    sz = 36; // 下伸小写占中下两格 (28~60)
+  } else if (ch === 'p') {
+    sz = 36;
+  } else if (ch === 't') {
+    sz = 36;
+  } else if (ch === 'f') {
+    sz = 43;
+  } else if (ch === 'i') {
+    sz = 33;
+  } else if (ch === 'j') {
+    sz = 35;
+  } else {
+    // 中格小写 (a, c, e, m, n, o, r, s, u, v, w, x, z)
+    sz = 31;
+  }
+
+  return `
+    <svg class="eng-glyph-svg" viewBox="0 0 70 72" preserveAspectRatio="xMidYMid meet">
+      <text x="35" y="44" text-anchor="middle" dominant-baseline="alphabetic"
+            class="letter-svg-text font-${fontFamily}"
+            font-size="${sz}" font-weight="${fontWeight}"
+            fill="#1e293b" ${opacityAttr}>${escapeHTML(clean)}</text>
     </svg>
   `;
 }
@@ -372,17 +482,18 @@ function renderLetterMode() {
       // 笔顺示范卡块
       let strokeCardHTML = '';
       if (state.showLetterStrokeCard) {
+        const isPair = letter.trim().length >= 2;
+        const cardClass = `letter-stroke-card${isPair ? ' pair-card' : ''}`;
         if (strokeSvgUrl) {
-          const fallbackUrl = strokeSvgUrl.replace('/english_bi_shun/', 'https://f.zt8.cn/img/yin_wen_bi_shun/');
           strokeCardHTML = `
-            <div class="letter-stroke-card" title="字母 ${letter} 笔顺">
-              <img src="${strokeSvgUrl}" alt="${letter} 笔顺示范" onerror="this.src='${fallbackUrl}'" />
+            <div class="${cardClass}" title="字母 ${escapeHTML(letter)} 棍棒体笔顺示范">
+              <img src="${strokeSvgUrl}" alt="${escapeHTML(letter)} 棍棒体笔顺示范" />
             </div>
           `;
         } else {
           strokeCardHTML = `
-            <div class="letter-stroke-card text-preview">
-              <span>${letter}</span>
+            <div class="${cardClass} text-preview">
+              <span>${escapeHTML(letter)}</span>
             </div>
           `;
         }
@@ -398,16 +509,17 @@ function renderLetterMode() {
         const isTrace = c > 0 && c <= state.letterTraceCount;
         const isBlank = c > state.letterTraceCount;
 
-        let charHTML = '';
+        let glyphSvg = '';
         let cellClass = 'eng-cell';
 
-        if (isModel) {
-          cellClass += ' model-cell';
-          charHTML = `<span class="letter-glyph font-${state.fontFamily} model-glyph">${escapeHTML(letter)}</span>`;
-        } else if (isTrace) {
-          cellClass += ' trace-cell';
-          const opacityStyle = `opacity: ${state.traceOpacity / 100};`;
-          charHTML = `<span class="letter-glyph font-${state.fontFamily} trace-glyph" style="${opacityStyle}">${escapeHTML(letter)}</span>`;
+        if (isModel || isTrace) {
+          cellClass += isModel ? ' model-cell' : ' trace-cell';
+          glyphSvg = generateLetterGlyphSvg({
+            letter,
+            isModel,
+            traceOpacity: state.traceOpacity,
+            fontFamily: state.fontFamily
+          });
         } else {
           cellClass += ' blank-cell';
         }
@@ -422,7 +534,7 @@ function renderLetterMode() {
         cellsHTML += `
           <div class="${cellClass}">
             ${gridSvg}
-            ${charHTML}
+            ${glyphSvg}
           </div>
         `;
       }
@@ -515,22 +627,30 @@ function renderWordMode() {
         const isTrace = c > 0 && c <= state.wordTraceCount;
         const isBlank = c > state.wordTraceCount;
 
-        let wordContent = '';
+        let wordSvg = '';
         let colClass = 'word-col';
 
-        if (isModel) {
-          colClass += ' model-col';
-          wordContent = `<div class="word-text font-${state.fontFamily}">${formatWordRootHTML(word, state.showRootColors)}</div>`;
-        } else if (isTrace) {
-          colClass += ' trace-col';
-          const opacityStyle = `opacity: ${state.traceOpacity / 100};`;
-          wordContent = `<div class="word-text font-${state.fontFamily} trace-word" style="${opacityStyle}">${formatWordRootHTML(word, false)}</div>`;
+        if (isModel || isTrace) {
+          colClass += isModel ? ' model-col' : ' trace-col';
+          const opacityAttr = isTrace ? `opacity="${state.traceOpacity / 100}"` : '';
+          const showColors = isModel && state.showRootColors;
+          const tspans = formatWordRootSvgTspans(word, showColors);
+          const fontSize = word.length > 11 ? Math.max(20, Math.round(330 / word.length)) : 30;
+          wordSvg = `
+            <svg class="eng-glyph-svg" viewBox="0 0 240 72" preserveAspectRatio="xMinYMid meet">
+              <text x="14" y="44" dominant-baseline="alphabetic"
+                    class="word-svg-text font-${state.fontFamily}"
+                    font-size="${fontSize}" ${opacityAttr}>
+                ${tspans}
+              </text>
+            </svg>
+          `;
         } else {
           colClass += ' blank-col';
         }
 
         const gridSvg = generateFourLineSvg({
-          width: 180,
+          width: 240,
           height: 72,
           gridColorType: state.gridColorType,
           showSlant: state.showSlantLines
@@ -539,7 +659,7 @@ function renderWordMode() {
         wordColsHTML += `
           <div class="${colClass}">
             ${gridSvg}
-            ${wordContent}
+            ${wordSvg}
           </div>
         `;
       }
@@ -622,7 +742,7 @@ function renderSentenceMode() {
 
     pageItems.forEach(sentence => {
       const modelGridSvg = generateFourLineSvg({
-        width: 720,
+        width: 1000,
         height: 72,
         gridColorType: state.gridColorType,
         showSlant: state.showSlantLines,
@@ -630,23 +750,28 @@ function renderSentenceMode() {
       });
 
       const blankPracticeSvg = generateFourLineSvg({
-        width: 720,
+        width: 1000,
         height: 72,
         gridColorType: state.gridColorType,
         showSlant: state.showSlantLines,
         slantStep: 22
       });
 
-      const sentenceFormatted = formatSentenceWithRootsHTML(sentence, state.showSentenceRootColors);
+      const fontSize = sentence.length > 60 ? Math.max(20, Math.round(1700 / sentence.length)) : 28;
+      const sentenceTspans = formatSentenceSvgTspans(sentence, state.showSentenceRootColors);
 
       pairsHTML += `
         <div class="sentence-pair-block">
-          <!-- 1. 范例文句行（按词根彩色标注） -->
-          <div class="sentence-model-row font-${state.fontFamily}">
+          <!-- 1. 范例文句行（按词根彩色标注，严格坐落于四线三格第3线基准线） -->
+          <div class="sentence-model-row">
             ${modelGridSvg}
-            <div class="sentence-text-layer">
-              ${sentenceFormatted}
-            </div>
+            <svg class="eng-glyph-svg" viewBox="0 0 1000 72" preserveAspectRatio="xMinYMid meet">
+              <text x="14" y="44" dominant-baseline="alphabetic"
+                    class="sentence-svg-text font-${state.fontFamily}"
+                    font-size="${fontSize}" fill="#1e293b">
+                ${sentenceTspans}
+              </text>
+            </svg>
           </div>
           <!-- 2. 四线三格空白临摹行（供学生书写临摹） -->
           <div class="sentence-practice-row">
@@ -659,8 +784,8 @@ function renderSentenceMode() {
     // 补齐末页剩余空白句子对
     const remainingPairs = pairsPerPage - pageItems.length;
     for (let r = 0; r < remainingPairs; r++) {
-      const emptySvg1 = generateFourLineSvg({ width: 720, height: 72, gridColorType: state.gridColorType, showSlant: state.showSlantLines, slantStep: 22 });
-      const emptySvg2 = generateFourLineSvg({ width: 720, height: 72, gridColorType: state.gridColorType, showSlant: state.showSlantLines, slantStep: 22 });
+      const emptySvg1 = generateFourLineSvg({ width: 1000, height: 72, gridColorType: state.gridColorType, showSlant: state.showSlantLines, slantStep: 22 });
+      const emptySvg2 = generateFourLineSvg({ width: 1000, height: 72, gridColorType: state.gridColorType, showSlant: state.showSlantLines, slantStep: 22 });
       pairsHTML += `
         <div class="sentence-pair-block empty-pair">
           <div class="sentence-model-row empty-row">${emptySvg1}</div>

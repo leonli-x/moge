@@ -978,7 +978,7 @@ input[type="range"] { width: 100%; accent-color: var(--cinnabar); cursor: pointe
 .pinyin-cell {
   position: relative;
   height: 100%;
-  max-height: 58px;
+  max-height: 54px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -988,10 +988,22 @@ input[type="range"] { width: 100%; accent-color: var(--cinnabar); cursor: pointe
   background-color: #ffffff;
 }
 
-.pinyin-cell-svg {
-  display: block;
+.pinyin-grid-svg {
+  position: absolute;
+  left: 0;
+  top: 0;
   width: 100%;
   height: 100%;
+  pointer-events: none;
+}
+
+.pinyin-glyph-svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
   overflow: visible;
 }
 
@@ -1202,6 +1214,15 @@ input[type="range"] { width: 100%; accent-color: var(--cinnabar); cursor: pointe
     align-items: center !important;
   }
   .sheet.pinyin-sheet .pinyin-cell {
+    height: 100% !important;
+    max-height: 14mm !important;
+  }
+  .sheet.pinyin-sheet .pinyin-grid-svg,
+  .sheet.pinyin-sheet .pinyin-glyph-svg {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
     height: 100% !important;
   }
   .sheet.pinyin-sheet .pinyin-sheet-footer.concise {
@@ -1432,12 +1453,12 @@ input[type="range"] { width: 100%; accent-color: var(--cinnabar); cursor: pointe
 
 /* 字体选择 */
 .font-hengshui {
-  font-family: "Tw Cen MT", "Century Gothic", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: 'ABeeZee', 'Tw Cen MT', 'Century Gothic', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   letter-spacing: 0.8px;
   font-weight: 500;
 }
 .font-italic {
-  font-family: "Georgia", "Baskerville", "Times New Roman", serif;
+  font-family: 'Georgia', 'Baskerville', 'Times New Roman', serif;
   font-style: italic;
   letter-spacing: 0.5px;
 }
@@ -1450,6 +1471,22 @@ input[type="range"] { width: 100%; accent-color: var(--cinnabar); cursor: pointe
   height: 100%;
   display: block;
   pointer-events: none;
+}
+
+.eng-glyph-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.letter-svg-text,
+.word-svg-text,
+.sentence-svg-text {
+  user-select: none;
 }
 
 /* 页面内容区 */
@@ -1472,18 +1509,22 @@ input[type="range"] { width: 100%; accent-color: var(--cinnabar); cursor: pointe
 }
 
 .letter-stroke-card {
-  width: 50px;
-  height: 92%;
-  max-height: 52px;
+  width: 54px;
+  height: 94%;
+  max-height: 56px;
   flex-shrink: 0;
   border: 1px solid #d5cfc5;
   border-radius: 4px;
-  background: #faf9f6;
+  background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2px;
   box-sizing: border-box;
+}
+
+.letter-stroke-card.pair-card {
+  width: 74px;
 }
 
 .letter-stroke-card img {
@@ -1507,8 +1548,8 @@ input[type="range"] { width: 100%; accent-color: var(--cinnabar); cursor: pointe
   flex: 1 1 0%;
   display: grid;
   grid-template-columns: repeat(var(--letter-cols, 9), 1fr);
-  height: 92%;
-  max-height: 52px;
+  height: 94%;
+  max-height: 56px;
   align-items: center;
   gap: 0;
 }
