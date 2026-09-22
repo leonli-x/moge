@@ -507,10 +507,10 @@ export function generatePinyinPages(config = state) {
 
   const isPortrait = config.orientation === 'portrait';
   // 排版参数（根据 A4 尺寸经过严密几何测算）
-  // 纵向 A4 (210mm x 297mm): 每行 10 格，每页 12 行
-  // 横向 A4 (297mm x 210mm): 每行 14 格，每页 8 行
+  // 纵向 A4 (210mm x 297mm): 每行 10 格，每页 14 行（缩紧行距，更贴合小学拼音田字格/拼音本）
+  // 横向 A4 (297mm x 210mm): 每行 14 格，每页 9 行
   const colsPerRow = isPortrait ? 10 : 14;
-  const rowsPerPage = isPortrait ? 12 : 8;
+  const rowsPerPage = isPortrait ? 14 : 9;
 
   // 分页切片
   const pagesData = [];

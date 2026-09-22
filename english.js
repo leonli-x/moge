@@ -37,6 +37,7 @@ const state = {
   traceOpacity: 25, // 15 - 60
 
   // 纸张与版面
+  conciseMode: true, // 简洁模式：默认打开，去掉页头，仅保留页码与练习内容（参考 pinyin.html）
   sheetTitle: '规范英语书法练习字帖',
   showInfoBar: true
 };
@@ -227,7 +228,7 @@ function formatWordRootSvgTspans(word, showColors = true) {
     else if (p.type === 'root') fill = '#1d4ed8';
     else if (p.type === 'suffix') fill = '#059669';
     else if (p.type === 'compound') fill = '#d97706';
-    return `<tspan fill="${fill}" font-weight="600">${escapeHTML(p.text)}</tspan>`;
+    return `<tspan fill="${fill}" font-weight="400">${escapeHTML(p.text)}</tspan>`;
   }).join('');
 }
 
@@ -296,66 +297,305 @@ function generateFourLineSvg({
   `;
 }
 
-// 按照 PPT 棍棒体规范，精确计算字母在四线三格中的占格与字形参数
-function generateLetterGlyphSvg({ letter, isModel, traceOpacity, fontFamily }) {
-  const opacityAttr = !isModel ? `opacity="${traceOpacity / 100}"` : '';
-  const fontWeight = isModel ? '600' : '500';
-  const clean = letter.trim();
+// ================ 官方标准 1:1:1 细线条矢量棍棒体（手写印刷体）笔画定义 ================
+// 四线坐标：y1 = 12 (顶线), y2 = 28 (中线), y3 = 44 (基准线), y4 = 60 (底线)
+// 上格：12~28 (16px), 中格：28~44 (16px), 下格：44~60 (16px) -> 严格 1:1:1 等距官方标准
+// 线条粗细统一为 1.8px 纤细手写圆头线条 (stroke-width: 1.8, stroke-linecap: round)
+// cx 为字符水平中心点 (单字默认 35, 大小写配对大写 23、小写 48)
 
-  // 如果是大小写配对形式（如 Aa, Bb, Gg...）
+// 标准小学英语棍棒体（手写印刷体）单线矢量笔画定义
+// 基于四线三格官方规范：y1 = 12 (顶线), y2 = 28 (中线), y3 = 44 (基准线), y4 = 60 (底线)
+// cx 为字母中心横坐标 (单字母模式默认 35, 双字母模式大写 23、小写 48)
+const ENGLISH_GLYPH_PATHS = {
+  // === 26个小写字母 ===
+  'a': (cx) => [
+    { d: `M ${cx + 5} 32 C ${cx + 3} 28 ${cx - 6} 28 ${cx - 6.5} 36 C ${cx - 7} 44 ${cx + 3} 44 ${cx + 5} 41` },
+    { d: `M ${cx + 5} 28 L ${cx + 5} 41 C ${cx + 5} 43.5 ${cx + 6.8} 44 ${cx + 8} 44` }
+  ],
+  'b': (cx) => [
+    { d: `M ${cx - 5.5} 12 L ${cx - 5.5} 44` },
+    { d: `M ${cx - 5.5} 32 C ${cx - 3} 28 ${cx + 6.5} 28 ${cx + 6.5} 36 C ${cx + 6.5} 44 ${cx - 3} 44 ${cx - 5.5} 41` }
+  ],
+  'c': (cx) => [
+    { d: `M ${cx + 5.5} 32 C ${cx + 3.5} 28 ${cx - 6} 28 ${cx - 6.5} 36 C ${cx - 7} 44 ${cx + 3.5} 44 ${cx + 5.5} 40` }
+  ],
+  'd': (cx) => [
+    { d: `M ${cx + 5.5} 32 C ${cx + 3} 28 ${cx - 6} 28 ${cx - 6.5} 36 C ${cx - 7} 44 ${cx + 3} 44 ${cx + 5.5} 41` },
+    { d: `M ${cx + 5.5} 12 L ${cx + 5.5} 44` }
+  ],
+  'e': (cx) => [
+    { d: `M ${cx - 6} 36 L ${cx + 5.8} 36 C ${cx + 5.8} 29 ${cx - 4} 28 ${cx - 6.5} 36 C ${cx - 7} 44 ${cx + 3.5} 44 ${cx + 5.8} 40.5` }
+  ],
+  'f': (cx) => [
+    { d: `M ${cx + 5} 14.5 C ${cx + 3.5} 12 ${cx - 2.5} 12 ${cx - 2.5} 17 L ${cx - 2.5} 44` },
+    { d: `M ${cx - 6.5} 28 L ${cx + 3.5} 28` }
+  ],
+  'g': (cx) => [
+    { d: `M ${cx + 5} 32 C ${cx + 3} 28 ${cx - 6} 28 ${cx - 6.5} 36 C ${cx - 7} 44 ${cx + 3} 44 ${cx + 5} 41` },
+    { d: `M ${cx + 5} 28 L ${cx + 5} 53 C ${cx + 5} 59 ${cx - 1.5} 60 ${cx - 5.5} 57` }
+  ],
+  'h': (cx) => [
+    { d: `M ${cx - 5.5} 12 L ${cx - 5.5} 44` },
+    { d: `M ${cx - 5.5} 34 C ${cx - 3} 28 ${cx + 5.5} 28 ${cx + 5.5} 35 L ${cx + 5.5} 44` }
+  ],
+  'i': (cx) => [
+    { d: `M ${cx} 28 L ${cx} 44` },
+    { d: `M ${cx - 0.2} 19.5 A 1.4 1.4 0 1 1 ${cx + 0.2} 19.5 Z`, isDot: true }
+  ],
+  'j': (cx) => [
+    { d: `M ${cx + 1.5} 28 L ${cx + 1.5} 53 C ${cx + 1.5} 59 ${cx - 2.5} 60 ${cx - 6} 57` },
+    { d: `M ${cx + 1.3} 19.5 A 1.4 1.4 0 1 1 ${cx + 1.7} 19.5 Z`, isDot: true }
+  ],
+  'k': (cx) => [
+    { d: `M ${cx - 5} 12 L ${cx - 5} 44` },
+    { d: `M ${cx + 5} 28 L ${cx - 4.5} 37 L ${cx + 5.5} 44` }
+  ],
+  'l': (cx) => [
+    { d: `M ${cx} 12 L ${cx} 44` }
+  ],
+  'm': (cx) => [
+    { d: `M ${cx - 8.5} 28 L ${cx - 8.5} 44` },
+    { d: `M ${cx - 8.5} 33 C ${cx - 7} 28 ${cx} 28 ${cx} 34 L ${cx} 44` },
+    { d: `M ${cx} 33 C ${cx + 1.5} 28 ${cx + 8.5} 28 ${cx + 8.5} 34 L ${cx + 8.5} 44` }
+  ],
+  'n': (cx) => [
+    { d: `M ${cx - 6} 28 L ${cx - 6} 44` },
+    { d: `M ${cx - 6} 33 C ${cx - 3.5} 28 ${cx + 6} 28 ${cx + 6} 34 L ${cx + 6} 44` }
+  ],
+  'o': (cx) => [
+    { d: `M ${cx} 28 C ${cx - 6.8} 28 ${cx - 6.8} 44 ${cx} 44 C ${cx + 6.8} 44 ${cx + 6.8} 28 ${cx} 28 Z` }
+  ],
+  'p': (cx) => [
+    { d: `M ${cx - 5.5} 28 L ${cx - 5.5} 60` },
+    { d: `M ${cx - 5.5} 32 C ${cx - 3} 28 ${cx + 6.5} 28 ${cx + 6.5} 36 C ${cx + 6.5} 44 ${cx - 3} 44 ${cx - 5.5} 41` }
+  ],
+  'q': (cx) => [
+    { d: `M ${cx + 5.5} 32 C ${cx + 3} 28 ${cx - 6} 28 ${cx - 6.5} 36 C ${cx - 7} 44 ${cx + 3} 44 ${cx + 5.5} 41` },
+    { d: `M ${cx + 5.5} 28 L ${cx + 5.5} 60` }
+  ],
+  'r': (cx) => [
+    { d: `M ${cx - 4.5} 28 L ${cx - 4.5} 44` },
+    { d: `M ${cx - 4.5} 33 C ${cx - 2} 28 ${cx + 4.5} 28 ${cx + 5} 30` }
+  ],
+  's': (cx) => [
+    { d: `M ${cx + 5} 31.5 C ${cx + 3.5} 28 ${cx - 5.5} 28.5 ${cx - 5.5} 32.5 C ${cx - 5.5} 36.5 ${cx + 5.5} 35.5 ${cx + 5.5} 39.5 C ${cx + 5.5} 44 ${cx - 4} 44 ${cx - 5} 41` }
+  ],
+  't': (cx) => [
+    { d: `M ${cx - 1} 19 L ${cx - 1} 41 C ${cx - 1} 43.5 ${cx + 1.5} 44 ${cx + 4} 44` },
+    { d: `M ${cx - 5.5} 28 L ${cx + 4.5} 28` }
+  ],
+  'u': (cx) => [
+    { d: `M ${cx - 5.5} 28 L ${cx - 5.5} 40 C ${cx - 5.5} 44 ${cx + 2.5} 44 ${cx + 5} 41 L ${cx + 5} 28` },
+    { d: `M ${cx + 5} 28 L ${cx + 5} 41 C ${cx + 5} 43.5 ${cx + 6.8} 44 ${cx + 8} 44` }
+  ],
+  'v': (cx) => [
+    { d: `M ${cx - 6} 28 L ${cx} 44 L ${cx + 6} 28` }
+  ],
+  'w': (cx) => [
+    { d: `M ${cx - 8.5} 28 L ${cx - 4.5} 44 L ${cx} 32 L ${cx + 4.5} 44 L ${cx + 8.5} 28` }
+  ],
+  'x': (cx) => [
+    { d: `M ${cx - 5.5} 28 L ${cx + 5.5} 44` },
+    { d: `M ${cx + 5.5} 28 L ${cx - 5.5} 44` }
+  ],
+  'y': (cx) => [
+    { d: `M ${cx - 5.5} 28 L ${cx} 39` },
+    { d: `M ${cx + 5.5} 28 L ${cx - 6} 60` }
+  ],
+  'z': (cx) => [
+    { d: `M ${cx - 5.5} 28 L ${cx + 5.5} 28 L ${cx - 5.5} 44 L ${cx + 5.5} 44` }
+  ],
+
+  // === 26个大写字母 (全部顶天立地占上中两格 12~44) ===
+  'A': (cx) => [
+    { d: `M ${cx - 7.5} 44 L ${cx} 12 L ${cx + 7.5} 44` },
+    { d: `M ${cx - 4.5} 33 L ${cx + 4.5} 33` }
+  ],
+  'B': (cx) => [
+    { d: `M ${cx - 6} 12 L ${cx - 6} 44` },
+    { d: `M ${cx - 6} 12 L ${cx + 2.5} 12 C ${cx + 7} 12 ${cx + 7} 28 ${cx - 6} 28` },
+    { d: `M ${cx - 6} 28 L ${cx + 3.5} 28 C ${cx + 8} 28 ${cx + 8} 44 ${cx - 6} 44` }
+  ],
+  'C': (cx) => [
+    { d: `M ${cx + 7} 18.5 C ${cx + 4} 12 ${cx - 6.5} 12 ${cx - 7} 28 C ${cx - 7.5} 44 ${cx + 4} 44 ${cx + 7} 37.5` }
+  ],
+  'D': (cx) => [
+    { d: `M ${cx - 6} 12 L ${cx - 6} 44` },
+    { d: `M ${cx - 6} 12 L ${cx + 1} 12 C ${cx + 8.5} 12 ${cx + 8.5} 44 ${cx + 1} 44 L ${cx - 6} 44` }
+  ],
+  'E': (cx) => [
+    { d: `M ${cx - 6} 12 L ${cx - 6} 44` },
+    { d: `M ${cx - 6} 12 L ${cx + 6} 12` },
+    { d: `M ${cx - 6} 28 L ${cx + 4} 28` },
+    { d: `M ${cx - 6} 44 L ${cx + 6} 44` }
+  ],
+  'F': (cx) => [
+    { d: `M ${cx - 6} 12 L ${cx - 6} 44` },
+    { d: `M ${cx - 6} 12 L ${cx + 6} 12` },
+    { d: `M ${cx - 6} 28 L ${cx + 4} 28` }
+  ],
+  'G': (cx) => [
+    { d: `M ${cx + 7} 18.5 C ${cx + 4} 12 ${cx - 6.5} 12 ${cx - 7} 28 C ${cx - 7.5} 44 ${cx + 4} 44 ${cx + 7} 36 L ${cx + 7} 30 L ${cx + 1} 30` }
+  ],
+  'H': (cx) => [
+    { d: `M ${cx - 6.5} 12 L ${cx - 6.5} 44` },
+    { d: `M ${cx + 6.5} 12 L ${cx + 6.5} 44` },
+    { d: `M ${cx - 6.5} 28 L ${cx + 6.5} 28` }
+  ],
+  'I': (cx) => [
+    { d: `M ${cx} 12 L ${cx} 44` },
+    { d: `M ${cx - 5} 12 L ${cx + 5} 12` },
+    { d: `M ${cx - 5} 44 L ${cx + 5} 44` }
+  ],
+  'J': (cx) => [
+    { d: `M ${cx - 4} 12 L ${cx + 4} 12` },
+    { d: `M ${cx + 2.5} 12 L ${cx + 2.5} 39 C ${cx + 2.5} 43.5 ${cx - 1} 44 ${cx - 4.5} 41` }
+  ],
+  'K': (cx) => [
+    { d: `M ${cx - 6} 12 L ${cx - 6} 44` },
+    { d: `M ${cx + 6} 12 L ${cx - 5.5} 28 L ${cx + 6.5} 44` }
+  ],
+  'L': (cx) => [
+    { d: `M ${cx - 5.5} 12 L ${cx - 5.5} 44` },
+    { d: `M ${cx - 5.5} 44 L ${cx + 5.5} 44` }
+  ],
+  'M': (cx) => [
+    { d: `M ${cx - 8} 44 L ${cx - 8} 12 L ${cx} 38 L ${cx + 8} 12 L ${cx + 8} 44` }
+  ],
+  'N': (cx) => [
+    { d: `M ${cx - 7} 44 L ${cx - 7} 12 L ${cx + 7} 44 L ${cx + 7} 12` }
+  ],
+  'O': (cx) => [
+    { d: `M ${cx} 12 C ${cx - 8} 12 ${cx - 8} 44 ${cx} 44 C ${cx + 8} 44 ${cx + 8} 12 ${cx} 12 Z` }
+  ],
+  'P': (cx) => [
+    { d: `M ${cx - 6} 12 L ${cx - 6} 44` },
+    { d: `M ${cx - 6} 12 L ${cx + 2} 12 C ${cx + 7.5} 12 ${cx + 7.5} 28 ${cx - 6} 28` }
+  ],
+  'Q': (cx) => [
+    { d: `M ${cx} 12 C ${cx - 8} 12 ${cx - 8} 44 ${cx} 44 C ${cx + 8} 44 ${cx + 8} 12 ${cx} 12 Z` },
+    { d: `M ${cx + 1.5} 37 L ${cx + 8} 46` }
+  ],
+  'R': (cx) => [
+    { d: `M ${cx - 6} 12 L ${cx - 6} 44` },
+    { d: `M ${cx - 6} 12 L ${cx + 2} 12 C ${cx + 7.5} 12 ${cx + 7.5} 28 ${cx - 6} 28` },
+    { d: `M ${cx} 28 L ${cx + 6.5} 44` }
+  ],
+  'S': (cx) => [
+    { d: `M ${cx + 6} 18.5 C ${cx + 4} 12 ${cx - 6.5} 12.5 ${cx - 6.5} 20 C ${cx - 6.5} 27 ${cx + 6.8} 26 ${cx + 6.8} 35 C ${cx + 6.8} 44 ${cx - 4.5} 44 ${cx - 6} 38` }
+  ],
+  'T': (cx) => [
+    { d: `M ${cx - 7.5} 12 L ${cx + 7.5} 12` },
+    { d: `M ${cx} 12 L ${cx} 44` }
+  ],
+  'U': (cx) => [
+    { d: `M ${cx - 7} 12 L ${cx - 7} 35 C ${cx - 7} 44 ${cx + 7} 44 ${cx + 7} 35 L ${cx + 7} 12` }
+  ],
+  'V': (cx) => [
+    { d: `M ${cx - 7.5} 12 L ${cx} 44 L ${cx + 7.5} 12` }
+  ],
+  'W': (cx) => [
+    { d: `M ${cx - 10} 12 L ${cx - 5} 44 L ${cx} 24 L ${cx + 5} 44 L ${cx + 10} 12` }
+  ],
+  'X': (cx) => [
+    { d: `M ${cx - 7} 12 L ${cx + 7} 44` },
+    { d: `M ${cx + 7} 12 L ${cx - 7} 44` }
+  ],
+  'Y': (cx) => [
+    { d: `M ${cx - 7.5} 12 L ${cx} 28 L ${cx + 7.5} 12` },
+    { d: `M ${cx} 28 L ${cx} 44` }
+  ],
+  'Z': (cx) => [
+    { d: `M ${cx - 7} 12 L ${cx + 7} 12 L ${cx - 7} 44 L ${cx + 7} 44` }
+  ]
+};
+
+
+const CHAR_NATURAL_WIDTHS = {
+  'i': 6, 'l': 6, 'j': 8, 'f': 9, 't': 9, 'r': 9,
+  'm': 16, 'w': 16,
+  'I': 9, 'J': 10, 'M': 18, 'W': 18
+};
+
+function getCharWidth(c) {
+  if (CHAR_NATURAL_WIDTHS[c]) return CHAR_NATURAL_WIDTHS[c];
+  if (c >= 'A' && c <= 'Z') return 14;
+  return 11;
+}
+
+// 渲染单个字母或大小写配对的矢量字形（严格遵循 1:1:1 四线三格规范）
+function generateLetterGlyphSvg({ letter, isModel, traceOpacity, fontFamily }) {
+  const clean = letter.trim();
+  const isItalic = fontFamily === 'italic';
+
+  // 默认规范棍棒体：使用精确细线条矢量绘制，彻底解决字体位置不准与太粗压抑问题
+  if (!isItalic) {
+    const strokeColor = '#1e293b';
+    const strokeWidth = '1.8';
+    const opacityAttr = !isModel ? `opacity="${traceOpacity / 100}"` : '';
+    let pathsHTML = '';
+
+    if (clean.length === 2) {
+      const c1 = clean[0];
+      const c2 = clean[1];
+      const p1 = ENGLISH_GLYPH_PATHS[c1] ? ENGLISH_GLYPH_PATHS[c1](23) : null;
+      const p2 = ENGLISH_GLYPH_PATHS[c2] ? ENGLISH_GLYPH_PATHS[c2](48) : null;
+      if (p1 && p2) {
+        [...p1, ...p2].forEach(s => {
+          if (s.isDot) {
+            pathsHTML += `<path d="${s.d}" fill="${strokeColor}" ${opacityAttr} stroke="${strokeColor}" stroke-width="0.6" />`;
+          } else {
+            pathsHTML += `<path d="${s.d}" fill="none" ${opacityAttr} stroke="${strokeColor}" stroke-width="${strokeWidth}" stroke-linecap="round" stroke-linejoin="round" />`;
+          }
+        });
+        return `
+          <svg class="eng-glyph-svg" viewBox="0 0 70 72" preserveAspectRatio="none">
+            ${pathsHTML}
+          </svg>
+        `;
+      }
+    } else if (clean.length === 1) {
+      const p = ENGLISH_GLYPH_PATHS[clean] ? ENGLISH_GLYPH_PATHS[clean](35) : null;
+      if (p) {
+        p.forEach(s => {
+          if (s.isDot) {
+            pathsHTML += `<path d="${s.d}" fill="${strokeColor}" ${opacityAttr} stroke="${strokeColor}" stroke-width="0.6" />`;
+          } else {
+            pathsHTML += `<path d="${s.d}" fill="none" ${opacityAttr} stroke="${strokeColor}" stroke-width="${strokeWidth}" stroke-linecap="round" stroke-linejoin="round" />`;
+          }
+        });
+        return `
+          <svg class="eng-glyph-svg" viewBox="0 0 70 72" preserveAspectRatio="none">
+            ${pathsHTML}
+          </svg>
+        `;
+      }
+    }
+  }
+
+  // 意大利斜体或非标准字符降级为字体文本渲染
+  const opacityAttr = !isModel ? `opacity="${traceOpacity / 100}"` : '';
+  const fontWeight = '350';
   if (clean.length === 2) {
     const c1 = clean[0];
     const c2 = clean[1];
-    const sz1 = 40; // 大写顶天立地占上中两格 (12~44)
-    let sz2 = 28;  // 小写默认占满中格 (28~44)
-    if ('bdhkl'.includes(c2)) sz2 = 39;      // 上伸字母竖线触碰第1线
-    else if ('gqy'.includes(c2)) sz2 = 33;   // 下伸字母触碰底线
-    else if (c2 === 'p') sz2 = 33;
-    else if (c2 === 't') sz2 = 33;
-    else if (c2 === 'f') sz2 = 38;
-    else if (c2 === 'i') sz2 = 29;
-    else if (c2 === 'j') sz2 = 31;
-
     return `
-      <svg class="eng-glyph-svg" viewBox="0 0 70 72" preserveAspectRatio="xMidYMid meet">
+      <svg class="eng-glyph-svg" viewBox="0 0 70 72" preserveAspectRatio="none">
         <text x="23" y="44" text-anchor="middle" dominant-baseline="alphabetic"
               class="letter-svg-text font-${fontFamily}"
-              font-size="${sz1}" font-weight="${fontWeight}"
+              font-size="40" font-weight="${fontWeight}"
               fill="#1e293b" ${opacityAttr}>${escapeHTML(c1)}</text>
         <text x="48" y="44" text-anchor="middle" dominant-baseline="alphabetic"
               class="letter-svg-text font-${fontFamily}"
-              font-size="${sz2}" font-weight="${fontWeight}"
+              font-size="28" font-weight="${fontWeight}"
               fill="#1e293b" ${opacityAttr}>${escapeHTML(c2)}</text>
       </svg>
     `;
   }
 
-  // 单字母模式（如仅大写 A 或仅小写 a）
-  let sz = 31;
-  const ch = clean;
-  if (ch >= 'A' && ch <= 'Z') {
-    sz = 45; // 大写占满上中两格 (12~44)
-  } else if ('bdhkl'.includes(ch)) {
-    sz = 44; // 上伸小写占上中两格 (12~44)
-  } else if ('gqy'.includes(ch)) {
-    sz = 36; // 下伸小写占中下两格 (28~60)
-  } else if (ch === 'p') {
-    sz = 36;
-  } else if (ch === 't') {
-    sz = 36;
-  } else if (ch === 'f') {
-    sz = 43;
-  } else if (ch === 'i') {
-    sz = 33;
-  } else if (ch === 'j') {
-    sz = 35;
-  } else {
-    // 中格小写 (a, c, e, m, n, o, r, s, u, v, w, x, z)
-    sz = 31;
-  }
-
+  const sz = (clean >= 'A' && clean <= 'Z') ? 42 : 30;
   return `
-    <svg class="eng-glyph-svg" viewBox="0 0 70 72" preserveAspectRatio="xMidYMid meet">
+    <svg class="eng-glyph-svg" viewBox="0 0 70 72" preserveAspectRatio="none">
       <text x="35" y="44" text-anchor="middle" dominant-baseline="alphabetic"
             class="letter-svg-text font-${fontFamily}"
             font-size="${sz}" font-weight="${fontWeight}"
@@ -363,6 +603,80 @@ function generateLetterGlyphSvg({ letter, isModel, traceOpacity, fontFamily }) {
     </svg>
   `;
 }
+
+// 渲染单词的矢量棍棒体字形（支持前缀、词根、后缀彩色标注）
+function generateWordGlyphSvg({ word, isModel, traceOpacity, fontFamily, showColors }) {
+  const isItalic = fontFamily === 'italic';
+
+  // 默认棍棒体模式：矢量绘制每个字母，保证笔画纤细均匀且四线对齐极佳
+  if (!isItalic && /^[a-zA-Z\s\-\.\']+$/.test(word)) {
+    const parts = decomposeWord(word);
+    let totalNaturalW = 0;
+    for (const ch of word) {
+      totalNaturalW += getCharWidth(ch);
+    }
+
+    const maxW = 210;
+    let scale = 1.0;
+    if (totalNaturalW > maxW) {
+      scale = maxW / totalNaturalW;
+    }
+
+    const startX = 14;
+    let currentX = startX;
+    let pathsHTML = '';
+    const strokeWidth = (1.8 * Math.min(1.0, scale)).toFixed(2);
+    const opacityAttr = !isModel ? `opacity="${traceOpacity / 100}"` : '';
+
+    parts.forEach(part => {
+      let partColor = '#1e293b';
+      if (showColors && isModel) {
+        if (part.type === 'prefix') partColor = '#7c3aed';
+        else if (part.type === 'root') partColor = '#1d4ed8';
+        else if (part.type === 'suffix') partColor = '#059669';
+        else if (part.type === 'compound') partColor = '#d97706';
+      }
+
+      for (const ch of part.text) {
+        const cw = getCharWidth(ch) * scale;
+        const cx = currentX + cw / 2;
+        currentX += cw;
+
+        if (ENGLISH_GLYPH_PATHS[ch]) {
+          const strokes = ENGLISH_GLYPH_PATHS[ch](cx);
+          strokes.forEach(s => {
+            if (s.isDot) {
+              pathsHTML += `<path d="${s.d}" fill="${partColor}" ${opacityAttr} stroke="${partColor}" stroke-width="0.6" />`;
+            } else {
+              pathsHTML += `<path d="${s.d}" fill="none" ${opacityAttr} stroke="${partColor}" stroke-width="${strokeWidth}" stroke-linecap="round" stroke-linejoin="round" />`;
+            }
+          });
+        }
+      }
+    });
+
+    return `
+      <svg class="eng-glyph-svg" viewBox="0 0 240 72" preserveAspectRatio="none">
+        ${pathsHTML}
+      </svg>
+    `;
+  }
+
+  // 降级为文本渲染 (例如斜体)
+  const opacityAttr = !isModel ? `opacity="${traceOpacity / 100}"` : '';
+  const tspans = formatWordRootSvgTspans(word, showColors);
+  const fontSize = word.length > 11 ? Math.max(20, Math.round(330 / word.length)) : 29;
+  return `
+    <svg class="eng-glyph-svg" viewBox="0 0 240 72" preserveAspectRatio="none">
+      <text x="14" y="44" dominant-baseline="alphabetic"
+            class="word-svg-text font-${fontFamily}"
+            font-size="${fontSize}" ${opacityAttr}>
+        ${tspans}
+      </text>
+    </svg>
+  `;
+}
+
 
 // ---------------- 渲染主流程 ----------------
 
@@ -397,6 +711,10 @@ function renderPages() {
 
 // 渲染页眉公共结构（包含品牌印章、标题与学生信息栏）
 function renderSheetHeader(subTag = '') {
+  if (state.conciseMode) {
+    return '';
+  }
+
   let infoBarHTML = '';
   if (state.showInfoBar) {
     infoBarHTML = `
@@ -440,6 +758,13 @@ function renderSheetHeader(subTag = '') {
 
 // 渲染页脚公共结构
 function renderSheetFooter(currentPage, totalPages) {
+  if (state.conciseMode) {
+    return `
+      <footer class="english-sheet-footer concise">
+        <span>第 ${currentPage} 页 / 共 ${totalPages} 页</span>
+      </footer>
+    `;
+  }
   return `
     <footer class="english-sheet-footer">
       <span>墨格 · 英语书法四线三格字帖</span>
@@ -464,8 +789,8 @@ function renderLetterMode() {
     };
   }
 
-  // A4 纵向排版：每页容纳 11 行
-  const rowsPerPage = 11;
+  // A4 纵向排版：每页容纳 13 行（26 字母整 2 页，52 字母整 4 页，行距紧凑规范）
+  const rowsPerPage = 13;
   const pagesData = [];
   for (let i = 0; i < letters.length; i += rowsPerPage) {
     pagesData.push(letters.slice(i, i + rowsPerPage));
@@ -601,8 +926,8 @@ function renderWordMode() {
     };
   }
 
-  // 单词模式每页容纳 9 行
-  const rowsPerPage = 9;
+  // 单词模式每页容纳 11 行（调整行距，更匀称饱满）
+  const rowsPerPage = 11;
   const pagesData = [];
   for (let i = 0; i < words.length; i += rowsPerPage) {
     pagesData.push(words.slice(i, i + rowsPerPage));
@@ -632,19 +957,14 @@ function renderWordMode() {
 
         if (isModel || isTrace) {
           colClass += isModel ? ' model-col' : ' trace-col';
-          const opacityAttr = isTrace ? `opacity="${state.traceOpacity / 100}"` : '';
           const showColors = isModel && state.showRootColors;
-          const tspans = formatWordRootSvgTspans(word, showColors);
-          const fontSize = word.length > 11 ? Math.max(20, Math.round(330 / word.length)) : 30;
-          wordSvg = `
-            <svg class="eng-glyph-svg" viewBox="0 0 240 72" preserveAspectRatio="xMinYMid meet">
-              <text x="14" y="44" dominant-baseline="alphabetic"
-                    class="word-svg-text font-${state.fontFamily}"
-                    font-size="${fontSize}" ${opacityAttr}>
-                ${tspans}
-              </text>
-            </svg>
-          `;
+          wordSvg = generateWordGlyphSvg({
+            word,
+            isModel,
+            traceOpacity: state.traceOpacity,
+            fontFamily: state.fontFamily,
+            showColors
+          });
         } else {
           colClass += ' blank-col';
         }
@@ -728,8 +1048,8 @@ function renderSentenceMode() {
   }
 
   // 句子模式：每组包含 1 行范例文句 + 1 行四线三格空白临摹行
-  // A4 纵向一页排版 5 组（共 10 行四线三格）
-  const pairsPerPage = 5;
+  // A4 纵向一页排版 6 组（共 12 行四线三格）
+  const pairsPerPage = 6;
   const pagesData = [];
   for (let i = 0; i < sentences.length; i += pairsPerPage) {
     pagesData.push(sentences.slice(i, i + pairsPerPage));
@@ -765,7 +1085,7 @@ function renderSentenceMode() {
           <!-- 1. 范例文句行（按词根彩色标注，严格坐落于四线三格第3线基准线） -->
           <div class="sentence-model-row">
             ${modelGridSvg}
-            <svg class="eng-glyph-svg" viewBox="0 0 1000 72" preserveAspectRatio="xMinYMid meet">
+            <svg class="eng-glyph-svg" viewBox="0 0 1000 72" preserveAspectRatio="none">
               <text x="14" y="44" dominant-baseline="alphabetic"
                     class="sentence-svg-text font-${state.fontFamily}"
                     font-size="${fontSize}" fill="#1e293b">
@@ -806,6 +1126,17 @@ function renderSentenceMode() {
   });
 
   return { html: pagesHTML, pageCount };
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  if (!toast) return;
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 2200);
 }
 
 // ---------------- 用户交互绑定 ----------------
@@ -1047,18 +1378,13 @@ function setupEvents() {
     });
   }
 
-  // 6. 纸张与标题
-  const sheetTitleInput = document.getElementById('sheet-custom-title');
-  if (sheetTitleInput) {
-    sheetTitleInput.addEventListener('input', () => {
-      state.sheetTitle = sheetTitleInput.value.trim() || '规范英语书法练习字帖';
-      renderPages();
-    });
-  }
-  const showInfoBar = document.getElementById('show-info-bar');
-  if (showInfoBar) {
-    showInfoBar.addEventListener('change', () => {
-      state.showInfoBar = showInfoBar.checked;
+  // 6. 简洁模式切换
+  const conciseModeEl = document.getElementById('concise-mode');
+  if (conciseModeEl) {
+    conciseModeEl.checked = state.conciseMode;
+    conciseModeEl.addEventListener('change', e => {
+      state.conciseMode = e.target.checked;
+      showToast(state.conciseMode ? '已开启简洁模式' : '已关闭简洁模式');
       renderPages();
     });
   }
@@ -1078,6 +1404,7 @@ function setupEvents() {
     state.showSlantLines = true;
     state.fontFamily = 'hengshui';
     state.traceOpacity = 25;
+    state.conciseMode = true;
     state.sheetTitle = '规范英语书法练习字帖';
     state.showInfoBar = true;
     location.reload();

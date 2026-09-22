@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap" rel="stylesheet">
   <style id="print-page-style">
     @page {
       size: A4 portrait;
@@ -273,7 +273,7 @@
         <fieldset style="margin-top: 14px;">
           <legend class="field-label">英文书法字体风格</legend>
           <div class="segmented" id="font-family-options">
-            <label><input type="radio" name="fontFamily" value="hengshui" checked /><span>衡水体 / 手写印刷体</span></label>
+            <label><input type="radio" name="fontFamily" value="hengshui" checked /><span>规范棍棒体 (推荐·标准细线)</span></label>
             <label><input type="radio" name="fontFamily" value="italic" /><span>意大利斜体</span></label>
           </div>
         </fieldset>
@@ -302,18 +302,14 @@
           </div>
         </div>
 
-        <div class="field-row">
-          <label class="field-label" for="sheet-custom-title">字帖主标题</label>
-        </div>
-        <input type="text" id="sheet-custom-title" value="规范英语书法练习字帖" />
-
-        <div class="toggle-row" style="margin-top: 14px;">
+        <!-- 简洁模式开关（默认开启） -->
+        <div class="toggle-row" style="margin-bottom: 16px;">
           <div>
-            <label for="show-info-bar">显示学生信息栏</label>
-            <span>包含班级、姓名、日期、评分栏</span>
+            <label for="concise-mode">简洁模式</label>
+            <span>去掉页头部分，只保留页码和练习内容（默认开启）</span>
           </div>
           <label class="switch">
-            <input type="checkbox" id="show-info-bar" checked />
+            <input type="checkbox" id="concise-mode" checked />
             <span></span>
           </label>
         </div>

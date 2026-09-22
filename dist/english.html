@@ -10,16 +10,16 @@
     href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23a63225'/%3E%3Ctext x='32' y='45' text-anchor='middle' font-size='42' fill='white'%3E墨%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap" rel="stylesheet">
   <style id="print-page-style">
     @page {
       size: A4 portrait;
       margin: 0;
     }
   </style>
-  <script type="module" crossorigin src="/assets/english-Dui0Bvlr.js"></script>
+  <script type="module" crossorigin src="/assets/english-BpXGVziS.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
-  <link rel="stylesheet" crossorigin href="/assets/styles-davENJmI.css">
+  <link rel="stylesheet" crossorigin href="/assets/styles-aFXxdfxB.css">
 </head>
 
 <body>
@@ -275,7 +275,7 @@
         <fieldset style="margin-top: 14px;">
           <legend class="field-label">英文书法字体风格</legend>
           <div class="segmented" id="font-family-options">
-            <label><input type="radio" name="fontFamily" value="hengshui" checked /><span>衡水体 / 手写印刷体</span></label>
+            <label><input type="radio" name="fontFamily" value="hengshui" checked /><span>规范棍棒体 (推荐·标准细线)</span></label>
             <label><input type="radio" name="fontFamily" value="italic" /><span>意大利斜体</span></label>
           </div>
         </fieldset>
@@ -304,18 +304,14 @@
           </div>
         </div>
 
-        <div class="field-row">
-          <label class="field-label" for="sheet-custom-title">字帖主标题</label>
-        </div>
-        <input type="text" id="sheet-custom-title" value="规范英语书法练习字帖" />
-
-        <div class="toggle-row" style="margin-top: 14px;">
+        <!-- 简洁模式开关（默认开启） -->
+        <div class="toggle-row" style="margin-bottom: 16px;">
           <div>
-            <label for="show-info-bar">显示学生信息栏</label>
-            <span>包含班级、姓名、日期、评分栏</span>
+            <label for="concise-mode">简洁模式</label>
+            <span>去掉页头部分，只保留页码和练习内容（默认开启）</span>
           </div>
           <label class="switch">
-            <input type="checkbox" id="show-info-bar" checked />
+            <input type="checkbox" id="concise-mode" checked />
             <span></span>
           </label>
         </div>
